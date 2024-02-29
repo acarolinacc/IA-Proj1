@@ -19,7 +19,7 @@ class Board:
 
         return True
 
-    def initialize_center_cells(self): #center cells are 'x' all others are 'o'        for i in range(3, 6):
+    def initialize_center_cells(self): #center cells are 'x' all others are None
         for i in range(3,6):
             for j in range(3, 6):
                 self.board[i][j] = 'X'

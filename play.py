@@ -18,12 +18,25 @@ class Game:
         self.board.draw_board(self.screen)
         pygame.display.flip()
         #self.make_random_moves(10) # Make 10 random moves to start the game
-        self.make_initial_moves(10)
+        self.make_initial_moves(1) #TODO change to 10
+        
+        #gameplay
         while not self.game_over:
             self.board.draw_board(self.screen)
             self.draw_arrows()  # Draw arrows on top of the board
             self.handle_events()
             pygame.display.flip()
+            self.check_game_over()
+        
+        #game over screen
+        while True:
+            self.draw_game_over()
+            pygame.display.flip()
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                    return
+                
+        
 
 
     def draw_arrows(self):
@@ -166,6 +179,27 @@ class Game:
                 make_move = False  
                 continue              
 
-    
+    def check_game_over(self):
+        game_over_board = Board()
+        game_over_board.initialize_center_cells()
+        if self.board.board == game_over_board.board:
+            self.game_over = True
+            print("Game Over")
+            return True
+        else:
+            return False
 
-    
+    def draw_game_over(self):
+        self.screen.fill((0, 0, 0))
+        
+        font_game_over = pygame.font.Font(None, 72)
+        text_game_over = font_game_over.render("Game Over", 1, (255, 255, 255))
+        textpos_game_over = text_game_over.get_rect(centerx=self.screen.get_width()/2, centery=self.screen.get_height()/2 - 50)
+        self.screen.blit(text_game_over, textpos_game_over)
+        
+        font_press_esc = pygame.font.Font(None, 24)
+        text_press_esc = font_press_esc.render("Press Esc to Leave", 1, (255, 255, 255))
+        textpos_press_esc = text_press_esc.get_rect(centerx=self.screen.get_width()/2, centery=self.screen.get_height()/2 + 50)
+        self.screen.blit(text_press_esc, textpos_press_esc)
+        
+        pygame.display.flip()

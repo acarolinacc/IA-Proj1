@@ -17,7 +17,8 @@ class Game:
         self.screen.fill((0, 0, 0))
         self.board.draw_board(self.screen)
         pygame.display.flip()
-        self.make_random_moves(10) # Make 10 random moves to start the game
+        #self.make_random_moves(10) # Make 10 random moves to start the game
+        self.make_initial_moves(10)
         while not self.game_over:
             self.board.draw_board(self.screen)
             self.draw_arrows()  # Draw arrows on top of the board
@@ -128,13 +129,43 @@ class Game:
             self.board.shift_row(35 - self.selected_arrow, 'right')
 
 
-    def make_random_moves(self, num_moves):
+    def make_random_moves(self, num_moves): #makes the initial random moves
         arrows = random.sample(range(36), num_moves)
         for arrow in arrows:
-            time.sleep(1.0)
+            time.sleep(0.5) #wait 1 second before making the next move
             self.selected_arrow = arrow
             self.execute_move()
             self.board.draw_board(self.screen)
             pygame.display.flip()
+
+    def make_initial_moves(self,num_moves): #perfected version of make_random_moves, only moves columns/rows with x's in them
+        make_move = False
+        i = 0
+        while(i < num_moves):
+            self.selected_arrow = random.randint(0,35) #randomly select an arrow
+            if self.selected_arrow < 9: #top arrows
+                make_move = self.board.has_red_cell("column", self.selected_arrow)
+                print(str(make_move) + " " + str(self.selected_arrow))
+            elif self.selected_arrow < 18 and self.selected_arrow >= 9: #right arrows
+                make_move = self.board.has_red_cell("row", self.selected_arrow - 9)
+                print(str(make_move) + " " + str(self.selected_arrow))               
+            elif self.selected_arrow < 27 and self.selected_arrow >= 18: #bottom arrows
+                make_move = self.board.has_red_cell("column", 35 - self.selected_arrow - 9)
+                print(str(make_move) + " " + str(self.selected_arrow))
+            elif self.selected_arrow < 36 and self.selected_arrow >= 27: #left arrows
+                make_move = self.board.has_red_cell("row", 35 - self.selected_arrow)
+                print(str(make_move) + " " + str(self.selected_arrow))
+
+            if make_move:
+                i += 1
+                time.sleep(0.5) #wait 1 second before making the next move
+                self.execute_move()
+                self.board.draw_board(self.screen)
+                pygame.display.flip()
+            else:
+                make_move = False  
+                continue              
+
+    
 
     

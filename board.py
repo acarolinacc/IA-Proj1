@@ -65,3 +65,19 @@ class Board:
             for i in range(self.size - 1, 0, -1):
                 self.board[row][i] = self.board[row][i - 1]
             self.board[row][0] = temp
+
+    def is_red_cell(self,row,col):
+        if row < 0 or row >= self.size or col < 0 or col >= self.size:
+            return False
+        return self.board[row][col] == "X"
+
+    def has_red_cell(self,row_or_col,index):
+        if row_or_col == "row":
+            for i in range(self.size):
+                if self.is_red_cell(index,i):
+                    return True
+        else:
+            for i in range(self.size):
+                if self.is_red_cell(i,index):
+                    return True
+        return False

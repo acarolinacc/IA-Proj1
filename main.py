@@ -18,10 +18,6 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False                
-                
-
-        # Update game state
-        # Render graphics
 
     
     pygame.display.flip()

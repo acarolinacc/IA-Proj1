@@ -1,0 +1,30 @@
+initial state : board after game.make_initial_moves() (exige funcao para copiar board?)
+
+operators :
+
+. shift row i right :
+	precondition: i > 0 e i < 9
+	effect : row i is shifted right
+	cost : 1
+
+. shift row i left :
+	precondition: i > 0 e i < 9
+	effect : row i is shifted right
+	cost : 1
+
+. shift column i right :
+	precondition: i > 0 e i < 9
+	effect : column i is shifted right
+	cost : 1
+
+. shift column i left :
+	precondition: i > 0 e i < 9
+	effect : column i is shifted left
+	cost : 1
+
+objective test: check whether board[4,5,6][4,5,6] (central 3x3 square) is "x" and only those
+
+
+
+
+

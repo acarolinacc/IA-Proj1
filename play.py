@@ -6,11 +6,13 @@ import random
 import time
 
 class Game:
+    
     def __init__(self, screen):
         self.screen = screen
         self.board = Board()    
         self.selected_arrow = 0
         self.game_over = False
+        self.mouse_pos = (0, 0)
 
 
     def run(self):
@@ -36,8 +38,6 @@ class Game:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     return
                 
-        
-
 
     def draw_arrows(self):
         arrow_width = 30
@@ -94,6 +94,12 @@ class Game:
                     self.execute_move()
                 elif event.key == pygame.K_ESCAPE:
                     self.game_over = True
+            elif event.type == pygame.MOUSEBUTTONDOWN:
+                self.mouse_pos = pygame.mouse.get_pos()
+                self.selected_arrow_mouse()
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if(self.mouse_pos == pygame.mouse.get_pos()):
+                    self.execute_move()
 
 
     def select_arrow(self, direction): #simpler version for debugging
@@ -130,6 +136,39 @@ class Game:
             else:
                 print("Invalid Movement")           
 
+
+    def selected_arrow_mouse(self):
+        arrow_width = 30
+        arrow_height = 25
+        arrow_spacing = 50
+        for i in range(9): #top arrows
+            arrow_x = (macros.X_ARROW_OFFSET) + i * arrow_spacing
+            arrow_y = macros.Y_ARROW_OFFSET  # Adjusted y-coordinate for top arrows
+            if arrow_x <= self.mouse_pos[0] <= arrow_x + arrow_width and arrow_y <= self.mouse_pos[1] <= arrow_y + arrow_height:
+                self.selected_arrow = i
+                return
+
+        for i in range(9,18): #rigth arrows
+            arrow_x = macros.X_ARROW_OFFSET + macros.BOARD_SIZE
+            arrow_y = macros.Y_SIDE_ARROW_OFFSET + (i-9) * arrow_spacing
+            if arrow_x <= self.mouse_pos[0] <= arrow_x + arrow_height and arrow_y <= self.mouse_pos[1] <= arrow_y + arrow_width:
+                self.selected_arrow = i
+                return
+
+        for i in range(18,27): #bottom arrows
+            arrow_x = (macros.X_ARROW_OFFSET) + (8-(i-18)) * arrow_spacing # adjusted x coordinate. 8-(i-18) is used to reverse the order of the arrows , arrows come clockwise
+            arrow_y = macros.Y_OFFSET + macros.BOARD_SIZE + (macros.Y_OFFSET-(macros.Y_ARROW_OFFSET + arrow_height)) # Adjusted y-coordinate for bottom arrows  
+            if arrow_x <= self.mouse_pos[0] <= arrow_x + arrow_width and arrow_y <= self.mouse_pos[1] <= arrow_y + arrow_height:
+                self.selected_arrow = i
+                return
+
+        for i in range(27,36): #left arrows
+            arrow_x = macros.X_OFFSET - arrow_height - macros.X_SIDE_ARROW_OFFSET
+            arrow_y = macros.Y_SIDE_ARROW_OFFSET + (8-(i-27)) * arrow_spacing
+            if arrow_x <= self.mouse_pos[0] <= arrow_x + arrow_height and arrow_y <= self.mouse_pos[1] <= arrow_y + arrow_width:
+                self.selected_arrow = i
+                return
+        self.select_arrow = 0 #if no arrow is selected, select the first arrow
 
     def execute_move(self):
         if self.selected_arrow < 9: #top arrows

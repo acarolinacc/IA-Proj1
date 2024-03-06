@@ -18,7 +18,7 @@ class Game:
         self.board.draw_board(self.screen)
         pygame.display.flip()
         #self.make_random_moves(10) # Make 10 random moves to start the game
-        self.make_initial_moves(1) #TODO change to 10
+        self.make_initial_moves(macros.NUM_INITIAL_MOVES)
         
         #gameplay
         while not self.game_over:
@@ -40,8 +40,8 @@ class Game:
 
 
     def draw_arrows(self):
-        arrow_width = 30 #values for top and bottom arrows
-        arrow_height = 25 #values for top and bottom arrows
+        arrow_width = 30
+        arrow_height = 25
         arrow_spacing = 50 
         for i in range(9): #top arrows
             arrow_x = (macros.X_ARROW_OFFSET) + i * arrow_spacing

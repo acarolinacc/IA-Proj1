@@ -19,6 +19,10 @@ class Board:
 
         return True
 
+    def __hash__(self):
+        return hash(tuple(tuple(row) for row in self.board))
+        
+
     def initialize_center_cells(self): #center cells are 'x' all others are None
         for i in range(3,6):
             for j in range(3, 6):

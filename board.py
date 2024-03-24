@@ -6,7 +6,6 @@ class Board:
         self.size = 9
         self.cell_size = 50
         self.board = [[None for _ in range(self.size)] for _ in range(self.size)]
-        self.background_image = pygame.image.load('91657.jpg')  
         self.initialize_center_cells()
 
     def __eq__(self, other):
@@ -34,8 +33,6 @@ class Board:
             print(' '.join(row))
 
     def draw_board(self, screen):
-        screen.blit(self.background_image, (0, 0))
-
         # Draw the board grid
         for row in range(self.size):
             for col in range(self.size):

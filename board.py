@@ -1,5 +1,6 @@
 import pygame
 import macros
+import time
 
 class Board:
     def __init__(self):
@@ -7,6 +8,7 @@ class Board:
         self.cell_size = 50
         self.board = [[None for _ in range(self.size)] for _ in range(self.size)]
         self.initialize_center_cells()
+        self.start_time = time.time()
 
     def initialize_center_cells(self):
         center_positions = [(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]
@@ -47,19 +49,23 @@ class Board:
             print(' '.join(row))
 
     def draw_board(self, screen):
-        screen.fill((19,8,64))  
+        screen.fill((19, 8, 64))  
 
-        # Draw the board grid
+        elapsed_time = int(time.time() - self.start_time)
+        font = pygame.font.Font(None, 36)
+        text = font.render("Tempo: " + str(elapsed_time) + "s", True, (255, 255, 255))
+        screen.blit(text, (10, 10))
+
         for row in range(self.size):
             for col in range(self.size):
                 cell_rect = pygame.Rect(macros.X_OFFSET + col * self.cell_size, macros.Y_OFFSET + row * self.cell_size, self.cell_size, self.cell_size)
-                pygame.draw.rect(screen, (255, 255, 255), cell_rect, 2, border_radius=5)  # Linhas mais grossas e bordas arredondadas
+                pygame.draw.rect(screen, (255, 255, 255), cell_rect, 2, border_radius=5)  
 
-                # Fill cells with colors
                 if self.board[row][col] == "X":
-                    pygame.draw.circle(screen, (231,214,100), cell_rect.center, self.cell_size // 3)
+                    pygame.draw.circle(screen, (231, 214, 100), cell_rect.center, self.cell_size // 3)
                 else:
-                    pygame.draw.circle(screen, (127,30,136,255), cell_rect.center, self.cell_size // 3)
+                    pygame.draw.circle(screen, (127, 30, 136, 255), cell_rect.center, self.cell_size // 3)
+
 
     def shift_column(self, col, direction):
         if direction == 'up':

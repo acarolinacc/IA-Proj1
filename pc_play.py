@@ -160,10 +160,10 @@ class PCPlay:
 
 
     def manhattan_distance_heuristic(self, state):
-        goal_positions = [(4, 4), (4, 5), (4, 6), (5, 4), (5, 5), (5, 6), (6, 4), (6, 5), (6, 6)]
+        goal_positions = [(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]
         total_distance = 0
 
-        for row_index, row in enumerate(state.board.board):  # Acesse a matriz do tabuleiro
+        for row_index, row in enumerate(state.board.board):
             for col_index, cell in enumerate(row):
                 if cell == 'X':  
                     min_distance = min(abs(row_index - goal[0]) + abs(col_index - goal[1]) for goal in goal_positions)

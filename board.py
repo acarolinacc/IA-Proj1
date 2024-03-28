@@ -23,9 +23,6 @@ class Board:
                     distance += min_distance
         return distance
 
-
-
-
     def __eq__(self, other):
         if len(self.board) != len(other.board) or len(self.board[0]) != len(other.board[0]):
             return False
@@ -50,18 +47,19 @@ class Board:
             print(' '.join(row))
 
     def draw_board(self, screen):
+        screen.fill((19,8,64))  
+
         # Draw the board grid
         for row in range(self.size):
             for col in range(self.size):
-                pygame.draw.rect(screen, (255, 255, 255), (macros.X_OFFSET + col * self.cell_size, macros.Y_OFFSET + row * self.cell_size, self.cell_size, self.cell_size), 1)
+                cell_rect = pygame.Rect(macros.X_OFFSET + col * self.cell_size, macros.Y_OFFSET + row * self.cell_size, self.cell_size, self.cell_size)
+                pygame.draw.rect(screen, (255, 255, 255), cell_rect, 2, border_radius=5)  # Linhas mais grossas e bordas arredondadas
 
-        # Draw stones or marks on the board
-        for row in range(self.size):
-            for col in range(self.size):
+                # Fill cells with colors
                 if self.board[row][col] == "X":
-                    pygame.draw.circle(screen, (255, 0, 0), (macros.X_OFFSET + col * self.cell_size + self.cell_size // 2, macros.Y_OFFSET + row * self.cell_size + self.cell_size // 2), self.cell_size // 3)
+                    pygame.draw.circle(screen, (231,214,100), cell_rect.center, self.cell_size // 3)
                 else:
-                    pygame.draw.circle(screen, (0, 255, 0), (macros.X_OFFSET + col * self.cell_size + self.cell_size // 2, macros.Y_OFFSET + row * self.cell_size + self.cell_size // 2), self.cell_size // 3)
+                    pygame.draw.circle(screen, (127,30,136,255), cell_rect.center, self.cell_size // 3)
 
     def shift_column(self, col, direction):
         if direction == 'up':

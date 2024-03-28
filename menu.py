@@ -6,7 +6,6 @@ from board import Board
 import macros
 import sys
 
-# Classe que representa o menu do jogo
 
 class Menu:
     def __init__(self, screen):
@@ -97,15 +96,13 @@ class Menu:
 
     def draw_pc_play_options(self):
         pc_play_options = ["BFS", "DFS", "Iterative Deepening", "Uniform Cost Search", "Greedy Search", "A* Search", "Back"]
-        screen_width, screen_height = self.screen.get_size()  # Obtém as dimensões da tela
+        screen_width, screen_height = self.screen.get_size()  
         
-        # Desenha a imagem de fundo a cada frame
         background_image = pygame.image.load("91657.jpg")
         self.screen.blit(background_image, (0, 0))
 
         
         for i, option in enumerate(pc_play_options):
-            # Muda a cor para amarelo se a opção estiver selecionada, caso contrário, branco
             color = (255, 255, 0) if i == self.selected_option else (255, 255, 255)
             text_surface = self.font.render(option, True, color)
             text_rect = text_surface.get_rect(center=(screen_width / 2, screen_height / 2 + i * 50 - len(pc_play_options) * 25))

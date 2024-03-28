@@ -97,11 +97,22 @@ class Menu:
 
     def draw_pc_play_options(self):
         pc_play_options = ["BFS", "DFS", "Iterative Deepening", "Uniform Cost Search", "Greedy Search", "A* Search", "Back"]
+        screen_width, screen_height = self.screen.get_size()  # Obtém as dimensões da tela
+        
+        # Desenha a imagem de fundo a cada frame
+        background_image = pygame.image.load("91657.jpg")
+        self.screen.blit(background_image, (0, 0))
+
+        
         for i, option in enumerate(pc_play_options):
-            color = (255, 255, 255) if i == self.selected_option else (128, 128, 128)
+            # Muda a cor para amarelo se a opção estiver selecionada, caso contrário, branco
+            color = (255, 255, 0) if i == self.selected_option else (255, 255, 255)
             text_surface = self.font.render(option, True, color)
-            text_rect = text_surface.get_rect(center=(400, 200 + i * 50))
+            text_rect = text_surface.get_rect(center=(screen_width / 2, screen_height / 2 + i * 50 - len(pc_play_options) * 25))
+            
             self.screen.blit(text_surface, text_rect)
+
+
 
     def handle_pc_play_events(self):
         for event in pygame.event.get():

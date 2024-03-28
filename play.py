@@ -228,17 +228,21 @@ class Game:
         else:
             return False
 
-    def draw_game_over(self):
+    def draw_game_over(self, victory=False):
         self.screen.fill((0, 0, 0))
+
+        background_image = pygame.image.load("91657.jpg") 
+        self.screen.blit(background_image, (0, 0))  
+
+        font_victory = pygame.font.Font(None, 72)
+        text_victory = font_victory.render("VICTORY!", True, (118,181,197))
+        textpos_victory = text_victory.get_rect(center=(self.screen.get_width()/2, self.screen.get_height()/2 - 50))
+        self.screen.blit(text_victory, textpos_victory)
+
         
-        font_game_over = pygame.font.Font(None, 72)
-        text_game_over = font_game_over.render("Game Over", 1, (255, 255, 255))
-        textpos_game_over = text_game_over.get_rect(centerx=self.screen.get_width()/2, centery=self.screen.get_height()/2 - 50)
-        self.screen.blit(text_game_over, textpos_game_over)
-        
-        font_press_esc = pygame.font.Font(None, 24)
-        text_press_esc = font_press_esc.render("Press Esc to Leave", 1, (255, 255, 255))
-        textpos_press_esc = text_press_esc.get_rect(centerx=self.screen.get_width()/2, centery=self.screen.get_height()/2 + 50)
+        font_press_esc = pygame.font.Font(None, 36)
+        text_press_esc = font_press_esc.render("Press Esc to Leave", True, (255, 255, 255))
+        textpos_press_esc = text_press_esc.get_rect(center=(self.screen.get_width()/2, self.screen.get_height()/2 + 80))
         self.screen.blit(text_press_esc, textpos_press_esc)
-        
+
         pygame.display.flip()

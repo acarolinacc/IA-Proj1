@@ -8,6 +8,24 @@ class Board:
         self.board = [[None for _ in range(self.size)] for _ in range(self.size)]
         self.initialize_center_cells()
 
+    def initialize_center_cells(self):
+        center_positions = [(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]
+        for row, col in center_positions:
+            self.board[row][col] = 'X'
+
+    def manhattan_distance_heuristic(self):
+        distance = 0
+        center_positions = [(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]
+        for row_index, row in enumerate(self.board):
+            for col_index, cell in enumerate(row):
+                if cell == 'X': 
+                    min_distance = min(abs(row_index - target_row) + abs(col_index - target_col) for target_row, target_col in center_positions)
+                    distance += min_distance
+        return distance
+
+
+
+
     def __eq__(self, other):
         if len(self.board) != len(other.board) or len(self.board[0]) != len(other.board[0]):
             return False
@@ -19,10 +37,9 @@ class Board:
 
         return True
 
-    def __hash__(self):
+    def hash_value(self):
         return hash(tuple(tuple(row) for row in self.board))
         
-
     def initialize_center_cells(self): #center cells are 'x' all others are None
         for i in range(3,6):
             for j in range(3, 6):

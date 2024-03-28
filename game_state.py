@@ -2,48 +2,77 @@ import board
 from copy import deepcopy
 
 class GameState:
-
-    def __init__(self, board, depth = 0, move_history = []):
+    def __init__(self, board, depth=0, move_history=None):
         self.board = board
         self.depth = depth
-        if(depth == 0):
-            self.move_history = [] + move_history + [deepcopy(self.board)] #add first state to history
-        else:
-            self.move_history = [] + move_history
+        self.move_history = move_history if move_history is not None else []
         self.id = id(self)
 
+    def add_move_to_history(self, move, cost):
+        self.move_history.append((move, cost))
+
+    def path_cost(self):
+        return sum(cost for _, cost in self.move_history)
+
+
+    def add_move_to_history(self, move):
+        self.move_history.append(move)
+
     def __hash__(self):
-        return hash((self.board, self.depth, tuple(self.move_history)))
+        board_hash = self.board.hash_value()
+        return hash((board_hash, self.depth, tuple([row.hash_value() for row in self.move_history])))
 
     def __eq__(self, other):
-        if isinstance(other, GameState):
-            return self.board == other.board
-        else:
-            return False
+        return isinstance(other, GameState) and self.board == other.board
 
+    def __lt__(self, other):
+        return self.path_cost() < other.path_cost()
+    
     
     
 
     def children(self):
-        children = []
-        for i in range(self.board.size): #for each possible row/col index apply the associated move
-            new_state = deepcopy(self)  # Create a deep copy of the current game state
-            children.append(new_state.shift_column(i, 'up'))
-        for i in range(self.board.size):
-            new_state = deepcopy(self)  
-            children.append(new_state.shift_column(i, 'down'))
-        for i in range(self.board.size):
-            new_state = deepcopy(self)  
-            children.append(new_state.shift_row(i, 'right'))
+        children_states = []
         for i in range(self.board.size): 
-            new_state = deepcopy(self)  
-            children.append(new_state.shift_row(i, 'left'))
-        return children
+            for direction in ['up', 'down', 'right', 'left']:
+                new_state = deepcopy(self)  
+                if direction in ['up', 'down']:
+                    new_state.board.shift_column(i, direction) 
+                else:
+                    new_state.board.shift_row(i, direction)
+                new_state.depth += 1 
+                children_states.append(new_state)
+        return children_states
+
         
     def goal_state(self):
-        new_board = board.Board()
-        new_board.initialize_center_cells() #board with center cells red and rest as None
-        return self.board == new_board
+        board_size = self.board.size if hasattr(self.board, 'size') else self.board.getSize()
+
+        center_positions = []
+
+        if board_size % 2 == 1:
+            center_positions.append((board_size // 2, board_size // 2))
+        else:
+            mid_point = board_size // 2
+            center_positions.extend([
+                (mid_point - 1, mid_point - 1),
+                (mid_point, mid_point - 1),
+                (mid_point - 1, mid_point),
+                (mid_point, mid_point)
+            ])
+
+        board_matrix = self.board.getBoard() if hasattr(self.board, 'getBoard') else self.board.board
+
+        red_pieces_positions = [
+            (x, y) for y, row in enumerate(board_matrix)
+            for x, cell in enumerate(row) if cell == 'X'
+        ]
+
+        if len(red_pieces_positions) != len(center_positions):
+            return False
+
+        return all(position in center_positions for position in red_pieces_positions)
+
 
 
     #OPERATORS
@@ -56,3 +85,8 @@ class GameState:
         self.board.shift_row(row, direction)
         self.depth += 1
         return self        
+    
+    def child_cost(self):
+        return 1
+    
+

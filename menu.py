@@ -96,7 +96,7 @@ class Menu:
             self.clock.tick(30)
 
     def draw_pc_play_options(self):
-        pc_play_options = ["BFS", "DFS", "Back to Main Menu"]
+        pc_play_options = ["BFS", "DFS", "Iterative Deepening", "Uniform Cost Search", "Greedy Search", "A* Search", "Back"]
         for i, option in enumerate(pc_play_options):
             color = (255, 255, 255) if i == self.selected_option else (128, 128, 128)
             text_surface = self.font.render(option, True, color)
@@ -110,9 +110,9 @@ class Menu:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
-                    self.selected_option = (self.selected_option - 1) % 3
+                    self.selected_option = (self.selected_option - 1) % 7
                 elif event.key == pygame.K_DOWN:
-                    self.selected_option = (self.selected_option + 1) % 3
+                    self.selected_option = (self.selected_option + 1) % 7
                 elif event.key == pygame.K_RETURN:
                     self.select_pc_play_option()
                 elif event.key == pygame.K_ESCAPE:
@@ -127,7 +127,6 @@ class Menu:
 
     def select_pc_play_option(self):
         if self.selected_option == 0:
-            #initializes necessary objects for initial_state (TODO refactor (change make_initial_moves to board?))
             self.screen.fill((0, 0, 0))
             game = Game(self.screen)
             game.make_initial_moves(macros.NUM_INITIAL_MOVES)
@@ -138,9 +137,57 @@ class Menu:
             else:
                 print("No solution found")
         elif self.selected_option == 1:
-            # Perform DFS
-            pass
+            self.screen.fill((0, 0, 0))
+            game = Game(self.screen)
+            game.make_initial_moves(macros.NUM_INITIAL_MOVES)
+            initial_state = GameState(game.board)
+            pc_play = PCPlay(initial_state)
+            if pc_play.dfs(self.screen):
+                pc_play.draw_history(pc_play.dfs(), self.screen)
+            else:
+                print("No solution found")
         elif self.selected_option == 2:
+            self.screen.fill((0, 0, 0))
+            game = Game(self.screen)
+            game.make_initial_moves(macros.NUM_INITIAL_MOVES)
+            initial_state = GameState(game.board)
+            pc_play = PCPlay(initial_state)
+            if pc_play.iterative_deepening_search(self.screen):
+                pc_play.draw_history(pc_play.iterative_deepening_search(), self.screen)
+            else:
+                print("No solution found")
+        elif self.selected_option == 3:
+            self.screen.fill((0, 0, 0))
+            game = Game(self.screen)
+            game.make_initial_moves(macros.NUM_INITIAL_MOVES)
+            initial_state = GameState(game.board)
+            pc_play = PCPlay(initial_state)
+            if pc_play.uniform_cost_search(self.screen):
+                pc_play.draw_history(pc_play.uniform_cost_search(), self.screen)
+            else:
+                print("No solution found")
+        elif self.selected_option == 4:
+            self.screen.fill((0, 0, 0))
+            game = Game(self.screen)
+            game.make_initial_moves(macros.NUM_INITIAL_MOVES)
+            initial_state = GameState(game.board)
+            pc_play = PCPlay(initial_state)
+            if pc_play.greedy_search(self.screen):
+                pc_play.draw_history(pc_play.greedy_search(), self.screen)
+            else:
+                print("No solution found")
+        elif self.selected_option == 5:
+            self.screen.fill((0, 0, 0))
+            game = Game(self.screen)
+            game.make_initial_moves(macros.NUM_INITIAL_MOVES)
+            initial_state = GameState(game.board)
+            pc_play = PCPlay(initial_state)
+            if pc_play.a_star_search(self.screen):
+                pc_play.draw_history(pc_play.a_star_search(), self.screen)
+            else:
+                print("No solution found")
+
+        elif self.selected_option == 6:
             self.run()
             return
 

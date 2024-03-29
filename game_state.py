@@ -43,37 +43,7 @@ class GameState:
                 children_states.append(new_state)
         return children_states
 
-        
-    '''
-    def goal_state(self):
-        board_size = self.board.size if hasattr(self.board, 'size') else self.board.getSize()
-
-        center_positions = []
-
-        if board_size % 2 == 1:
-            center_positions.append((board_size // 2, board_size // 2))
-        else:
-            mid_point = board_size // 2
-            center_positions.extend([
-                (mid_point - 1, mid_point - 1),
-                (mid_point, mid_point - 1),
-                (mid_point - 1, mid_point),
-                (mid_point, mid_point)
-            ])
-
-        board_matrix = self.board.getBoard() if hasattr(self.board, 'getBoard') else self.board.board
-
-        red_pieces_positions = [
-            (x, y) for y, row in enumerate(board_matrix)
-            for x, cell in enumerate(row) if cell == 'X'
-        ]
-
-        if len(red_pieces_positions) != len(center_positions):
-            return False
-
-        return all(position in center_positions for position in red_pieces_positions)
-    '''
-
+    
     def goal_state(self):
         goal_board = Board() #initialize_center_cells is called in board.__init__
         goal_state = GameState(goal_board,0,[])

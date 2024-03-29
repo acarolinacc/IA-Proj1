@@ -11,8 +11,8 @@ class Menu:
     def __init__(self, screen):
         self.screen = screen
         self.clock = pygame.time.Clock()
-        self.bg_image = pygame.image.load('91657.jpg').convert()  
-        self.font = pygame.font.Font('Retro Gaming.ttf', 36) 
+        self.bg_image = pygame.image.load('assets/background.jpg').convert()  
+        self.font = pygame.font.Font('assets/retro.ttf', 36) 
         self.selected_option = 0
         self.options = ["Play", "PC Solve", "Quit"]
 
@@ -42,7 +42,7 @@ class Menu:
         self.screen.blit(text_surface, (x_centered, y))
 
     def draw_options(self):
-        title_font = pygame.font.Font('Retro Gaming.ttf', 48)
+        title_font = pygame.font.Font('assets/retro.ttf', 48)
         self.draw_title("Cogito", title_font, (255, 215, 0), (0, 0, 0))
 
         for i, option in enumerate(self.options):
@@ -98,7 +98,7 @@ class Menu:
         pc_play_options = ["BFS", "DFS", "Iterative Deepening", "Uniform Cost Search", "Greedy Search", "A* Search", "Back"]
         screen_width, screen_height = self.screen.get_size()  
         
-        background_image = pygame.image.load("91657.jpg")
+        background_image = pygame.image.load("assets/background.jpg")
         self.screen.blit(background_image, (0, 0))
 
         
@@ -140,50 +140,60 @@ class Menu:
             game.make_initial_moves(macros.NUM_INITIAL_MOVES)
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
-            if pc_play.bfs(self.screen):
-                pc_play.draw_history(pc_play.bfs(), self.screen)
+            result = pc_play.bfs(self.screen) #resulting goal_state move_history
+            if result is not None:
+                pc_play.draw_history(result, self.screen)
             else:
                 print("No solution found")
+
         elif self.selected_option == 1:
             self.screen.fill((0, 0, 0))
             game = Game(self.screen)
             game.make_initial_moves(macros.NUM_INITIAL_MOVES)
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
-            if pc_play.dfs(self.screen):
-                pc_play.draw_history(pc_play.dfs(), self.screen)
+            result = pc_play.dfs(self.screen) #resulting goal_state move_history
+            if result is not None:
+                pc_play.draw_history(result, self.screen)
             else:
                 print("No solution found")
+
         elif self.selected_option == 2:
             self.screen.fill((0, 0, 0))
             game = Game(self.screen)
             game.make_initial_moves(macros.NUM_INITIAL_MOVES)
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
-            if pc_play.iterative_deepening_search(self.screen):
-                pc_play.draw_history(pc_play.iterative_deepening_search(), self.screen)
+            result = pc_play.iterative_deepening_search(self.screen) #resulting goal_state move_history
+            if result is not None:
+                pc_play.draw_history(result, self.screen)
             else:
                 print("No solution found")
+
         elif self.selected_option == 3:
             self.screen.fill((0, 0, 0))
             game = Game(self.screen)
             game.make_initial_moves(macros.NUM_INITIAL_MOVES)
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
-            if pc_play.uniform_cost_search(self.screen):
-                pc_play.draw_history(pc_play.uniform_cost_search(), self.screen)
+            result = pc_play.uniform_cost_search(self.screen) #resulting goal_state move_history
+            if result is not None:
+                pc_play.draw_history(result, self.screen)
             else:
                 print("No solution found")
+
         elif self.selected_option == 4:
             self.screen.fill((0, 0, 0))
             game = Game(self.screen)
             game.make_initial_moves(macros.NUM_INITIAL_MOVES)
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
-            if pc_play.greedy_search(self.screen):
-                pc_play.draw_history(pc_play.greedy_search(), self.screen)
+            result = pc_play.greedy_search(self.screen) #resulting goal_state move_history
+            if result is not None:
+                pc_play.draw_history(result, self.screen)
             else:
                 print("No solution found")
+                
         elif self.selected_option == 5:
             self.screen.fill((0, 0, 0))
             game = Game(self.screen)

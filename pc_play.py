@@ -12,27 +12,34 @@ class PCPlay:
     def __init__(self, initial_state):
         self.initial_state = initial_state
         
-    def bfs(self,screen):
+    def bfs(self, screen):
         print("BFS")
         queue = [self.initial_state]
         visited = set()
+        duplicates = 0
 
         while queue:
             state = queue.pop(0)
+
+            if state in visited:
+                duplicates += 1
+                continue
+
             visited.add(state)
-            #TODO: remove draw board from here
-            screen.fill((0,0,0))
-            state.board.draw_board(screen)
-            pygame.display.flip()
-            pygame.time.wait(50)
+
+            # Uncomment below lines if you want to visualize the board
+            # screen.fill((0, 0, 0))
+            # state.board.draw_board(screen)
+            # pygame.display.flip()
+            # pygame.time.wait(50)
+
             if state.goal_state():
-                return state.move_history()
+                return state.move_history
 
             for child in state.children():
-                if child not in visited:
-                    visited.add(child)
-                    queue.append(child)
-        
+                queue.append(child)
+
+        print(f"duplicates = {duplicates}")  # Print the count of duplicates
         return None
 
 
@@ -52,7 +59,7 @@ class PCPlay:
                 pygame.time.wait(50)
 
                 if state.goal_state():
-                    return state.move_history()
+                    return state.move_history
 
                 for child in reversed(state.children()): 
                     if child not in visited:
@@ -63,7 +70,7 @@ class PCPlay:
     def iterative_deepening_search(self, screen):
         def depth_limited_search(state, depth, screen):
             if state.goal_state(): 
-                return state.move_history()
+                return state.move_history
             if depth == 0:
                 return None
             for child in state.children():
@@ -119,7 +126,7 @@ class PCPlay:
                 pygame.display.flip()
 
                 if state.goal_state(): 
-                    return state.move_history()
+                    return state.move_history
 
                 for child in state.children():
                     if child not in visited:
@@ -171,21 +178,28 @@ class PCPlay:
 
         return total_distance
 
-
         
-    def draw_history(self, move_history,screen):
+    def draw_history(self, move_history, screen):
+        print("draw_history")
+        print(f"len={len(move_history)}")
         pygame.display.set_caption("Move History")
+        clock = pygame.time.Clock()
+
+        bg_image = pygame.image.load('assets/background.jpg').convert()  
 
         current_move = 0
         running = True
 
         while running:
-            screen.fill((0,0,0))
+            screen.blit(bg_image, (0, 0)) 
+
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
                 elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_LEFT:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
+                    elif event.key == pygame.K_LEFT:
                         if current_move > 0:
                             current_move -= 1
                     elif event.key == pygame.K_RIGHT:
@@ -193,11 +207,12 @@ class PCPlay:
                             current_move += 1
 
             current_state = move_history[current_move]
-            current_state.board.draw_board()
-
+            current_state.draw_board(screen)  # Pass the screen to draw_board
+            
             pygame.display.flip()
             clock.tick(30)
 
         pygame.quit()
+
 
     

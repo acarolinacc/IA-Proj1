@@ -228,10 +228,10 @@ class Game:
         else:
             return False
 
-    def draw_game_over(self, victory=False):
+    def draw_game_over(self):
         self.screen.fill((0, 0, 0))
 
-        background_image = pygame.image.load("91657.jpg") 
+        background_image = pygame.image.load("assets/background.jpg") 
         self.screen.blit(background_image, (0, 0))  
 
         font_victory = pygame.font.Font(None, 72)

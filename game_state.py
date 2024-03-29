@@ -1,22 +1,22 @@
-import board
+from board import Board
 from copy import deepcopy
 
 class GameState:
     def __init__(self, board, depth=0, move_history=None):
         self.board = board
         self.depth = depth
-        self.move_history = move_history if move_history is not None else []
+        #self.move_history = move_history if move_history is not None else []
+        if move_history is None:
+            self.move_history = [deepcopy(board)]
+        else:
+            self.move_history = move_history
         self.id = id(self)
 
-    def add_move_to_history(self, move, cost):
-        self.move_history.append((move, cost))
-
     def path_cost(self):
-        return sum(cost for _, cost in self.move_history)
+        return len(self.move_history)
 
-
-    def add_move_to_history(self, move):
-        self.move_history.append(move)
+    def add_move_to_history(self):
+        self.move_history.append(deepcopy(self.board))
 
     def __hash__(self):
         board_hash = self.board.hash_value()
@@ -28,23 +28,23 @@ class GameState:
     def __lt__(self, other):
         return self.path_cost() < other.path_cost()
     
-    
-    
 
     def children(self):
         children_states = []
-        for i in range(self.board.size): 
-            for direction in ['up', 'down', 'right', 'left']:
+        for direction in ['up', 'down', 'right', 'left']:
+            for i in range(self.board.size): 
                 new_state = deepcopy(self)  
                 if direction in ['up', 'down']:
                     new_state.board.shift_column(i, direction) 
                 else:
                     new_state.board.shift_row(i, direction)
                 new_state.depth += 1 
+                new_state.add_move_to_history()  # Update move history for each child state
                 children_states.append(new_state)
         return children_states
 
         
+    '''
     def goal_state(self):
         board_size = self.board.size if hasattr(self.board, 'size') else self.board.getSize()
 
@@ -72,7 +72,12 @@ class GameState:
             return False
 
         return all(position in center_positions for position in red_pieces_positions)
+    '''
 
+    def goal_state(self):
+        goal_board = Board() #initialize_center_cells is called in board.__init__
+        goal_state = GameState(goal_board,0,[])
+        return goal_state == self
 
 
     #OPERATORS

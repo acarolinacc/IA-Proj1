@@ -13,32 +13,37 @@ class PCPlay:
     def __init__(self, initial_state):
         self.initial_state = initial_state
         
+
     def bfs(self, screen):
         print("BFS")
         queue = [self.initial_state]
-        visited = set() # to avoid visiting the same state twice
-        start_time = time.time()
-        duplicates =0
+        visited = set()  
+        start_time = time.time()  
+        duplicates = 0
+
         while queue:
-            state = queue.pop(0)    # get the first state from the queue
-            visited.add(state)  # add the state to the visited set
+            state = queue.pop(0)  
+            visited.add(state)  
 
-
-            # Uncomment below lines if you want to visualize the board
             screen.fill((0, 0, 0))
             state.board.draw_board(screen)
             pygame.display.flip()
-            
+
             if state.goal_state():
-                print(time.time()-start_time)
+                end_time = time.time() 
+                print(f"BFS completado em {end_time - start_time:.2f} segundos.")
                 return state.move_history
 
             for child in state.children():
                 if child not in visited:
-                    queue.append(child) # add the child state to the queue
+                    queue.append(child) 
                 else:
-                    duplicates+=1
-        return None 
+                    duplicates += 1
+
+        end_time = time.time()
+        print(f"BFS terminou sem encontrar um estado objetivo em {end_time - start_time:.2f} segundos.")
+        return None
+
 
 
 
@@ -58,10 +63,10 @@ class PCPlay:
 
 
             if state.goal_state():
-                print(time.time()-start_time)
+                print(f"DFS completado em {time.time() - start_time:.2f} segundos.")
                 return state.move_history
 
-            for child in reversed(state.children()):  # traverse children in reverse order
+            for child in reversed(state.children()): 
                 if child not in visited:
                     stack.append(child)
         return None
@@ -89,7 +94,7 @@ class PCPlay:
         for depth in range(1, max_depth+1):
             result = depth_limited_search(self.initial_state, depth)
             if result is not None:
-                print(time.time()-start_time)
+                print(f"Iterative Deepening completado em {time.time() - start_time:.2f} segundos.")
                 return result
         return None
 
@@ -108,7 +113,7 @@ class PCPlay:
                 pygame.display.flip()
 
                 if state.goal_state():
-                    return state.move_history  # Retorna imediatamente ao encontrar o estado objetivo
+                    return state.move_history 
 
                 for child in state.children():
                     if child not in visited:
@@ -120,6 +125,8 @@ class PCPlay:
 
     def greedy_search(self, screen):
         print("Greedy Search")
+        start_time = time.time() 
+
         queue = PriorityQueue()
         queue.put((0, self.initial_state))  
         visited = set() 
@@ -133,6 +140,8 @@ class PCPlay:
                 pygame.display.flip()
 
                 if state.goal_state(): 
+                    end_time = time.time()  # Finaliza a medição do tempo
+                    print(f"Greedy Search completado em {end_time - start_time:.2f} segundos.")
                     return state.move_history
 
                 for child in state.children():
@@ -142,23 +151,28 @@ class PCPlay:
 
         return None
 
+
+
     def a_star_search(self, screen):
         print("A* Search")
+        start_time = time.time() 
+
         queue = PriorityQueue()
-        queue.put((0, self.initial_state))  
-        visited = set() 
+        queue.put((0, self.initial_state))
+        visited = set()
 
         while not queue.empty():
-            _, state = queue.get()  
+            _, state = queue.get()
             if state not in visited:
                 visited.add(state)
                 screen.fill((0, 0, 0))
                 state.board.draw_board(screen)
                 pygame.display.flip()
 
-
-                if state.goal_state(): 
-                    return state.move_history  
+                if state.goal_state():
+                    end_time = time.time()  
+                    print(f"A* Search completado em {end_time - start_time:.2f} segundos.")
+                    return state.move_history
 
                 for child in state.children():
                     if child not in visited:
@@ -174,7 +188,10 @@ class PCPlay:
                             f = new_g + h
                             queue.put((f, child))
 
+        end_time = time.time() 
+        print(f"A* Search terminou sem encontrar um estado objetivo em {end_time - start_time:.2f} segundos.")
         return None
+
 
 
 

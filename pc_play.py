@@ -5,6 +5,7 @@ import board
 from queue import PriorityQueue
 from copy import deepcopy
 import heapq
+import time
 
 
 class PCPlay: 
@@ -15,83 +16,89 @@ class PCPlay:
     def bfs(self, screen):
         print("BFS")
         queue = [self.initial_state]
-        visited = set()
-        duplicates = 0
-
+        visited = set() # to avoid visiting the same state twice
+        start_time = time.time()
+        duplicates =0
         while queue:
-            state = queue.pop(0)
+            state = queue.pop(0)    # get the first state from the queue
+            visited.add(state)  # add the state to the visited set
 
-            if state in visited:
-                duplicates += 1
-                continue
-
-            visited.add(state)
 
             # Uncomment below lines if you want to visualize the board
-            # screen.fill((0, 0, 0))
-            # state.board.draw_board(screen)
-            # pygame.display.flip()
-            # pygame.time.wait(50)
-
+            screen.fill((0, 0, 0))
+            state.board.draw_board(screen)
+            pygame.display.flip()
+            
             if state.goal_state():
+                print(time.time()-start_time)
                 return state.move_history
 
             for child in state.children():
-                queue.append(child)
-
-        print(f"duplicates = {duplicates}")  # Print the count of duplicates
-        return None
+                if child not in visited:
+                    queue.append(child) # add the child state to the queue
+                else:
+                    duplicates+=1
+        return None 
 
 
 
     def dfs(self, screen):
         print("DFS")
-        stack = [self.initial_state] 
-        visited = set()  
+        stack = [self.initial_state]
+        visited = set()
+        start_time = time.time()
 
         while stack:
-            state = stack.pop()  
-            if state not in visited:
-                visited.add(state)
-                screen.fill((0, 0, 0))
-                state.board.draw_board(screen)
-                pygame.display.flip()
-                pygame.time.wait(50)
+            state = stack.pop(0)
+            visited.add(state)
 
-                if state.goal_state():
-                    return state.move_history
+            screen.fill((0, 0, 0))
+            state.board.draw_board(screen)
+            pygame.display.flip()
 
-                for child in reversed(state.children()): 
-                    if child not in visited:
-                        stack.append(child)
 
+            if state.goal_state():
+                print(time.time()-start_time)
+                return state.move_history
+
+            for child in reversed(state.children()):  # traverse children in reverse order
+                if child not in visited:
+                    stack.append(child)
         return None
 
+
     def iterative_deepening_search(self, screen):
-        def depth_limited_search(state, depth, screen):
-            if state.goal_state(): 
+        def depth_limited_search(state, depth):
+            
+            screen.fill((0, 0, 0))
+            state.board.draw_board(screen)
+            pygame.display.flip()
+            if state.goal_state():
                 return state.move_history
             if depth == 0:
                 return None
             for child in state.children():
-                result = depth_limited_search(child, depth - 1, screen)
+                result = depth_limited_search(child, depth-1)
                 if result is not None:
                     return result
             return None
 
         print("Iterative Deepening")
-        for depth in range(1, 100):  
-            result = depth_limited_search(self.initial_state, depth, screen)
+        start_time = time.time()
+        max_depth = 20 # max depth to search TODO: this should depend on the level?
+        for depth in range(1, max_depth+1):
+            result = depth_limited_search(self.initial_state, depth)
             if result is not None:
+                print(time.time()-start_time)
                 return result
         return None
-
 
     def uniform_cost_search(self, screen):
         print("Uniform Cost Search")
         queue = []
-        heapq.heappush(queue, (0, self.initial_state)) 
-        visited = set() 
+        heapq.heappush(queue, (0, self.initial_state))
+        visited = set()
+
         while queue:
             cost, state = heapq.heappop(queue)
             if state not in visited:
@@ -100,8 +107,8 @@ class PCPlay:
                 state.board.draw_board(screen)
                 pygame.display.flip()
 
-                if state.goal_state():  
-                    return state.move_history()
+                if state.goal_state():
+                    return state.move_history  # Retorna imediatamente ao encontrar o estado objetivo
 
                 for child in state.children():
                     if child not in visited:
@@ -109,7 +116,6 @@ class PCPlay:
                         heapq.heappush(queue, (total_cost, child))
 
         return None
-
 
 
     def greedy_search(self, screen):
@@ -150,6 +156,7 @@ class PCPlay:
                 state.board.draw_board(screen)
                 pygame.display.flip()
 
+
                 if state.goal_state(): 
                     return state.move_history  
 
@@ -172,6 +179,7 @@ class PCPlay:
 
 
 
+
     def manhattan_distance_heuristic(self, state):
         goal_positions = [(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]
         total_distance = 0
@@ -184,9 +192,6 @@ class PCPlay:
 
         return total_distance
     
-    
-
-        
     def draw_history(self, move_history, screen):
         print("draw_history")
         print(f"len={len(move_history)}")
@@ -195,7 +200,7 @@ class PCPlay:
 
         bg_image = pygame.image.load('assets/background.jpg').convert()  
 
-        current_move = 0
+        current_move = len(move_history) - 1  # Começar do final da lista
         running = True
 
         while running:
@@ -221,6 +226,3 @@ class PCPlay:
             clock.tick(30)
 
         pygame.quit()
-
-
-    

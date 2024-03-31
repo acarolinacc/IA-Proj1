@@ -45,15 +45,16 @@ class GameState:
 
     
     def goal_state(self):
-        # Posições centrais fixas para um tabuleiro 9x9
         center_positions = [(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]
         board_matrix = self.board.getBoard() if hasattr(self.board, 'getBoard') else self.board.board
 
-        # Contar quantas peças 'X' estão nas posições centrais
+        # Verificar se todas as 9 peças 'X' estão nas posições centrais
         x_in_center = sum(board_matrix[r][c] == 'X' for r, c in center_positions)
 
-        # Verificar se todas as 9 peças 'X' estão nas posições centrais e só lá
-        return x_in_center == 9 and all(cell == 'X' for r, c in center_positions for cell in board_matrix[r])
+        # Verificar se não há 'X' fora das posições centrais
+        x_outside_center = sum(board_matrix[r][c] == 'X' for r in range(9) for c in range(9) if (r, c) not in center_positions)
+
+        return x_in_center == 9 and x_outside_center == 0
 
 
 

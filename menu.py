@@ -200,8 +200,10 @@ class Menu:
             game.make_initial_moves(macros.NUM_INITIAL_MOVES)
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
-            if pc_play.a_star_search(self.screen):
-                pc_play.draw_history(pc_play.a_star_search(), self.screen)
+            result = pc_play.a_star_search(self.screen) #resulting goal_state move_history
+
+            if result is not None:
+                pc_play.draw_history(result, self.screen)
             else:
                 print("No solution found")
 

@@ -93,7 +93,7 @@ class PCPlay:
         heapq.heappush(queue, (0, self.initial_state)) 
         visited = set() 
         while queue:
-            cost, state = heapq.heappop(queue)  
+            cost, state = heapq.heappop(queue)
             if state not in visited:
                 visited.add(state)
                 screen.fill((0, 0, 0))
@@ -105,10 +105,11 @@ class PCPlay:
 
                 for child in state.children():
                     if child not in visited:
-                        total_cost = cost + child.path_cost() 
+                        total_cost = cost + child.path_cost()
                         heapq.heappush(queue, (total_cost, child))
 
         return None
+
 
 
     def greedy_search(self, screen):
@@ -130,39 +131,44 @@ class PCPlay:
 
                 for child in state.children():
                     if child not in visited:
-                        heuristic_value = child.board.manhattan_distance_heuristic()  # Calcula a heurística para o estado filho
+                        heuristic_value = child.board.manhattan_distance_heuristic() 
                         queue.put((heuristic_value, child))
 
         return None
 
-
-
     def a_star_search(self, screen):
         print("A* Search")
-        queue = []
-        heapq.heappush(queue, (0, 0, self.initial_state)) 
+        queue = PriorityQueue()
+        queue.put((0, self.initial_state))  
         visited = set() 
 
-        while queue:
-            total_cost, real_cost, state = heapq.heappop(queue)
-            state_hash = hash(state)
-            if state_hash not in visited:
-                visited.add(state_hash)
+        while not queue.empty():
+            _, state = queue.get()  
+            if state not in visited:
+                visited.add(state)
                 screen.fill((0, 0, 0))
                 state.board.draw_board(screen)
                 pygame.display.flip()
-                
-                if state.goal_state():  
-                    return state.move_history()
-                
+
+                if state.goal_state(): 
+                    return state.move_history  
+
                 for child in state.children():
-                    child_hash = hash(child)
-                    if child_hash not in visited:
-                        child_real_cost = real_cost + child.child_cost()  
-                        child_total_cost = child_real_cost + self.manhattan_distance_heuristic(child)
-                        heapq.heappush(queue, (child_total_cost, child_real_cost, child))
-                        
+                    if child not in visited:
+                        g = len(state.move_history) + 1  # g(n) = cost so far
+                        h = self.manhattan_distance_heuristic(child)  # h(n) = heuristic value of the child state
+                        f = g + h  # f(n) = g(n) + h(n)
+                        queue.put((f, child))
+                    else:
+                        existing_g = len(child.move_history)
+                        new_g = len(state.move_history) + 1
+                        if new_g < existing_g:
+                            h = self.manhattan_distance_heuristic(child)
+                            f = new_g + h
+                            queue.put((f, child))
+
         return None
+
 
 
 
@@ -177,6 +183,8 @@ class PCPlay:
                     total_distance += min_distance
 
         return total_distance
+    
+    
 
         
     def draw_history(self, move_history, screen):

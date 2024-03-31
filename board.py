@@ -10,10 +10,11 @@ class Board:
         self.initialize_center_cells()
         self.start_time = time.time()
 
-    def initialize_center_cells(self):
-        center_positions = [(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]
-        for row, col in center_positions:
-            self.board[row][col] = 'X'
+        
+    def initialize_center_cells(self): #center cells are 'x' all others are None
+        for i in range(3,6):
+            for j in range(3, 6):
+                self.board[i][j] = 'X'
 
     def manhattan_distance_heuristic(self):
         distance = 0
@@ -24,6 +25,7 @@ class Board:
                     min_distance = min(abs(row_index - target_row) + abs(col_index - target_col) for target_row, target_col in center_positions)
                     distance += min_distance
         return distance
+
 
     def __eq__(self, other):
         if len(self.board) != len(other.board) or len(self.board[0]) != len(other.board[0]):
@@ -38,11 +40,7 @@ class Board:
 
     def hash_value(self):
         return hash(tuple(tuple(row) for row in self.board))
-        
-    def initialize_center_cells(self): #center cells are 'x' all others are None
-        for i in range(3,6):
-            for j in range(3, 6):
-                self.board[i][j] = 'X'
+
 
     def print_board(self):
         for row in self.board:

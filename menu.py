@@ -67,13 +67,6 @@ class Menu:
                 elif event.key == pygame.K_ESCAPE:
                     pygame.quit()
                     sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                for i, option in enumerate(self.options):
-                    text_rect = self.font.render(option, True, (0, 0, 0)).get_rect(center=(400, 200 + i * 50))
-                    if text_rect.collidepoint(mouse_pos):
-                        self.selected_option = i
-                        self.select_option()
 
     def select_option(self):
         if self.selected_option == 0:
@@ -125,13 +118,6 @@ class Menu:
                     self.select_pc_play_option()
                 elif event.key == pygame.K_ESCAPE:
                     return
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                mouse_pos = pygame.mouse.get_pos()
-                for i, option in enumerate(self.options):
-                    text_rect = self.font.render(option, True, (0, 0, 0)).get_rect(center=(400, 200 + i * 50))
-                    if text_rect.collidepoint(mouse_pos):
-                        self.selected_option = i
-                        self.select_pc_play_option()
 
     def select_pc_play_option(self):
         if self.selected_option == 0:
@@ -211,5 +197,3 @@ class Menu:
             self.run()
             return
 
-
-        

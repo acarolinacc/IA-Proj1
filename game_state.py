@@ -36,9 +36,11 @@ class GameState:
             for i in range(self.board.size): 
                 new_state = deepcopy(self)  
                 if direction in ['up', 'down']:
-                    new_state.board.shift_column(i, direction) 
+                    if new_state.board.has_red_cell('col',i): #only create children if column has 'x', in other words if shifting results in an observable alteration 
+                        new_state.board.shift_column(i, direction) 
                 else:
-                    new_state.board.shift_row(i, direction)
+                    if new_state.board.has_red_cell('row',i): #only create children if row has 'x', in other words if shifting results in an observable alteration 
+                        new_state.board.shift_row(i, direction)
                 new_state.depth += 1 
                 new_state.add_move_to_history()  # Update move history for each child state
                 children_states.append(new_state)

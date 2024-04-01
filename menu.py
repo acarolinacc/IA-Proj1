@@ -127,10 +127,9 @@ class Menu:
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
             result = pc_play.bfs(self.screen) #resulting goal_state move_history
-            if result is not None:
-                pc_play.draw_history(result, self.screen)
-            else:
-                print("No solution found")
+
+            if result is None:
+                print("Solution Not Found")
 
         elif self.selected_option == 1:
             self.screen.fill((0, 0, 0))
@@ -139,10 +138,9 @@ class Menu:
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
             result = pc_play.dfs(self.screen) #resulting goal_state move_history
-            if result is not None:
-                pc_play.draw_history(result, self.screen)
-            else:
-                print("No solution found")
+
+            if result is None:
+                print("Solution Not Found")
 
         elif self.selected_option == 2:
             self.screen.fill((0, 0, 0))
@@ -151,10 +149,9 @@ class Menu:
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
             result = pc_play.iterative_deepening_search(self.screen) #resulting goal_state move_history
-            if result is not None:
-                pc_play.draw_history(result, self.screen)
-            else:
-                print("No solution found")
+
+            if result is None:
+                print("Solution Not Found")
 
         elif self.selected_option == 3:
             self.screen.fill((0, 0, 0))
@@ -163,36 +160,15 @@ class Menu:
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
             result = pc_play.uniform_cost_search(self.screen) #resulting goal_state move_history
-            if result is not None:
-                pc_play.draw_history(result, self.screen)
-            else:
-                print("No solution found")
+
+            if result is None:
+                print("Solution Not Found")
 
         elif self.selected_option == 4:
             self.run_heuristics_menu("greedy")
-            #self.screen.fill((0, 0, 0))
-            #game = Game(self.screen)
-            #game.make_initial_moves(macros.NUM_INITIAL_MOVES)
-            #initial_state = GameState(game.board)
-            #pc_play = PCPlay(initial_state)
-            #result = pc_play.greedy_search(self.screen) #resulting goal_state move_history
-            #if result is not None:
-            #    pc_play.draw_history(result, self.screen)
-            #else:
-            #    print("No solution found")
                 
         elif self.selected_option == 5:
             self.run_heuristics_menu("a*")
-            #self.screen.fill((0, 0, 0))
-            #game = Game(self.screen)
-            #game.make_initial_moves(macros.NUM_INITIAL_MOVES)
-            #initial_state = GameState(game.board)
-            #pc_play = PCPlay(initial_state)
-            #result = pc_play.a_star_search_manhattan(self.screen) #resulting goal_state move_history
-            #if result is not None:
-            #    pc_play.draw_history(result, self.screen)
-            #else:
-            #    print("No solution found")
 
         elif self.selected_option == 6:
             self.run()
@@ -245,10 +221,9 @@ class Menu:
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
             result = pc_play.greedy_search_manhattan(self.screen) #resulting goal_state move_history
-            if result is not None:
-                pc_play.draw_history(result, self.screen)
-            else:
-                print("No solution found")
+
+            if result is None:
+                print("Solution Not Found")
 
 
         elif self.selected_option == 1 and current_algorithm == "greedy": #greedy with out of place cells
@@ -258,10 +233,9 @@ class Menu:
             initial_state = GameState(game.board)
             pc_play = PCPlay(initial_state)
             result = pc_play.greedy_search_out_of_place(self.screen) #resulting goal_state move_history
-            if result is not None:
-                pc_play.draw_history(result, self.screen)
-            else:
-                print("No solution found")
+
+            if result is None:
+                print("Solution Not Found")
                 
         elif self.selected_option == 0 and current_algorithm == "a*": #a* with manhattan distance
             self.screen.fill((0, 0, 0))
@@ -271,10 +245,8 @@ class Menu:
             pc_play = PCPlay(initial_state)
             result = pc_play.a_star_search_manhattan(self.screen) #resulting goal_state move_history
 
-            if result is not None:
-                pc_play.draw_history(result, self.screen)
-            else:
-                print("No solution found")
+            if result is None:
+                print("Solution Not Found")
 
         elif self.selected_option == 1 and current_algorithm == "a*": #a* with out of place 
             self.screen.fill((0, 0, 0))
@@ -284,10 +256,8 @@ class Menu:
             pc_play = PCPlay(initial_state)
             result = pc_play.a_star_search_out_of_place(self.screen) #resulting goal_state move_history
 
-            if result is not None:
-                pc_play.draw_history(result, self.screen)
-            else:
-                print("No solution found")
+            if result is None:
+                print("Solution Not Found")
 
         elif self.selected_option == 2:
             self.run_pc_play()

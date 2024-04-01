@@ -42,8 +42,8 @@ Mode: Watch an AI-powered bot untangle the puzzles.
 If you choose to let a bot play, you can select the algorithm it uses to solve the puzzles. 
 The options are:
 
-- DFS (Depth-First Search)
 - BFS (Breadth-First Search)
+- DFS (Depth-First Search)
 - Iterative Deepening
 - Uniform Cost Search
 - Greedy
@@ -69,7 +69,7 @@ IMAGE
 - 'ESC' to go back to the previous menu
 
 ### In-Game
-- Move around with the arrows (up, down, left or right)
+- Choose an row/column with the keyboard arrows (up, down, left or right) or with the mouse (by clicking on the desired arrow)
 - Press 'Enter' to make a move
 
 Immerse yourself in the strategic depths of Cogito, where every move is a step towards mastering this enthralling puzzle game.

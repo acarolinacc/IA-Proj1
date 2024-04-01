@@ -23,7 +23,8 @@ class PCPlay:
 
         while queue:
             state = queue.pop(0)  
-            visited.add(state)  
+            visited.add(state) 
+            #print(f"current state depth: {state.depth}") 
 
             #Uncomment to display algorithm working
             #screen.fill((0, 0, 0))
@@ -59,6 +60,7 @@ class PCPlay:
         while stack:
             state = stack.pop(0)
             visited.add(state)
+            #print(f"current state depth: {state.depth}") 
 
             #Uncomment to display algorithm working
             #screen.fill((0, 0, 0))
@@ -104,6 +106,7 @@ class PCPlay:
         start_time = time.time()
         max_depth = 20 # max depth to search TODO: this should depend on the level?
         for depth in range(1, max_depth+1):
+            print(f"depth: {depth}")
             result = depth_limited_search(self.initial_state, depth)
             if result is not None:
                 print(f"Iterative Deepening completado em {time.time() - start_time:.2f} segundos.")
@@ -200,7 +203,7 @@ class PCPlay:
 
                 for child in state.children():
                     if child not in visited:
-                        heuristic_value = child.board.manhattan_distance_heuristic() 
+                        heuristic_value = child.board.out_of_place_heuristic() 
                         queue.put((heuristic_value, child))
 
         return None
@@ -301,7 +304,7 @@ class PCPlay:
         bg_image = pygame.image.load('assets/background.jpg').convert()  
         font = pygame.font.Font('assets/retro.ttf', 36)
 
-        current_move = len(move_history) - 1  # Começar do final da lista
+        current_move = 0 #começar no inicio da lista (initial_state)
         running = True
 
         while running:
@@ -384,35 +387,3 @@ class PCPlay:
 
             pygame.display.flip()
             clock.tick(60)
-
-
-
-    def animateMovesSlowly(self, screen, move_history):
-        clock = pygame.time.Clock()
-        running = True
-        current_move = 0
-
-        while running:
-            screen.fill((0, 0, 0)) 
-            current_state = move_history[current_move]
-            current_state.draw_movements(screen)  # Pass the screen to draw_board
-            pygame.display.flip()
-
-            time.sleep(0.8)  # Adjust the delay time as needed
-
-            current_move += 1
-            if current_move >= len(move_history):
-                running = False
-
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    running = False  # Return False if user wants to quit
-                elif event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
-                        running = False  # Return False if user wants to quit
-                    elif event.key == pygame.K_SPACE:
-                        return True  # Return True if user wants to stop animation
-
-            clock.tick(30)
-
-        return True

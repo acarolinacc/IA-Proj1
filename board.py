@@ -26,7 +26,7 @@ class Board:
         return distance
 
 
-    def outside_pieces_heuristic(self):
+    def out_of_place_heuristic(self):
         center_positions = [(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]
         outside_pieces_count = 0
 

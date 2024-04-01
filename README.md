@@ -37,6 +37,7 @@ Upon launching Cogito, the main menu unfolds with options beckoning your choice:
 ![Menu](Assets/images/main_menu.png)
 
 Play: Dive into the game and commence your puzzle-solving journey.
+
 PC Solve: Watch an AI-powered bot untangle the puzzles.
 
 ### Bot Algorithm

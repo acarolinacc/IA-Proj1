@@ -22,6 +22,7 @@ class Game:
         pygame.display.flip()
         #self.make_random_moves(10) # Make 10 random moves to start the game
         self.make_initial_moves(macros.NUM_INITIAL_MOVES)
+        self.start_time = time.time() #restart the variable after the initial moves are made
         
         #gameplay
         while not self.game_over:

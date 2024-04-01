@@ -15,6 +15,13 @@ class Board:
             for j in range(3, 6):
                 self.board[i][j] = 'X'
 
+    def set_board(self,board): #used to set initial board according to level desired in the algorithm comparison file
+        self.board = board
+
+    def print_board(self):
+        for row in self.board:
+            print(row)
+
     def manhattan_distance_heuristic(self):
         distance = 0
         center_positions = [(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]
@@ -51,11 +58,6 @@ class Board:
 
     def hash_value(self):
         return hash(tuple(tuple(row) for row in self.board))
-
-
-    def print_board(self):
-        for row in self.board:
-            print(' '.join(row))
 
 
     def draw_board(self, screen):

@@ -4,6 +4,8 @@ Step into the world of Cogito, a mesmerizing puzzle game for Windows that rekind
 
 Official game website: https://www.myabandonware.com/game/cogito-1d4
 
+![Game](Assets/images/game.png)
+
 ## Compilation & Running Instructions
 
 To run the game, you will need to have Python installed on your computer, as well as the Pygame library, which is used for the game's graphical interface.
@@ -32,10 +34,10 @@ python main.py
 
 Upon launching Cogito, the main menu unfolds with options beckoning your choice:
 
-IMAGE
+![Menu](Assets/images/main_menu.png)
 
 Play: Dive into the game and commence your puzzle-solving journey.
-Mode: Watch an AI-powered bot untangle the puzzles.
+PC Solve: Watch an AI-powered bot untangle the puzzles.
 
 ### Bot Algorithm
 
@@ -49,17 +51,24 @@ The options are:
 - Greedy
 - A* (A-Star)
 
-IMAGE
+![Algoritmos](Assets/images/algoritmos.png)
 
-### Heuristics Explained
+In the "Greedy" and "A*" search algorithms for the Cogito game, two heuristics are often used: the Manhattan distance and the Out of Place Cells.
 
-In the "Greedy" and "A*" search algorithms for the Cogito game, the Manhattan distance heuristic is used. This heuristic calculates the total distance each piece must move on the grid to reach its goal position, moving only horizontally or vertically.
+**Manhattan Distance Heuristic**: This heuristic calculates the total distance each piece must move on the grid to reach its goal position, moving only horizontally or vertically. It is effective in gauging how close each piece is to its final destination.
 
-Greedy Search: Chooses moves that seem closest to the goal, based on the Manhattan distance, prioritizing immediate progress towards the goal without considering the path cost.
+  Greedy Search: Chooses moves that seem closest to the goal, based on the Manhattan distance, prioritizing immediate progress towards the goal without considering the path cost.
 
-A Search:* Combines the path cost from the start node with the Manhattan distance to the goal, balancing both the traveled path and the estimated distance to the goal, ensuring an optimal solution is found.
+  A Search*: Combines the path cost from the start node with the Manhattan distance to the goal. This balances both the traveled path and the estimated distance to the goal, ensuring an optimal solution is found.
 
-IMAGE
+**Out of Place Cells Heuristic**: This heuristic counts the number of pieces that are not in their goal position. It provides a straightforward measure of how many pieces are incorrectly placed, regardless of their distance from the correct position.
+
+  Greedy Search: Using this heuristic, Greedy Search will prioritize moves that result in the fewest number of pieces being out of place, aiming for a state where all pieces are in their correct positions.
+
+  A Search*: When applied in A* Search, this heuristic helps to balance between the cost of the path taken and the number of pieces that still need to be moved to their correct positions. It aids in finding an efficient path that reduces the number of out of place pieces as quickly as possible.
+
+![Heuristicas](Assets/images/heuristicas.png)
+
 
 ## Controls
 

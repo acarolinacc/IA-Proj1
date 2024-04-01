@@ -117,6 +117,8 @@ class Menu:
                 elif event.key == pygame.K_RETURN:
                     self.select_pc_play_option()
                 elif event.key == pygame.K_ESCAPE:
+                    self.selected_option = 6
+                    self.select_pc_play_option()
                     return
 
     def select_pc_play_option(self):
@@ -211,6 +213,8 @@ class Menu:
                 elif event.key == pygame.K_RETURN:
                     self.select_heuristic(current_algorithm)
                 elif event.key == pygame.K_ESCAPE:
+                    self.selected_option = 2
+                    self.select_heuristic("")
                     return
 
     def select_heuristic(self, current_algorithm):

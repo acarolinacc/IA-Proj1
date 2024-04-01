@@ -42,6 +42,7 @@ def level_1_ex_1():
     level_state = GameState(level_board)
     level_pc_play = PCPlay(level_state)
 
+    print("Level 1 - Example 1")
     level_pc_play.a_star_search_out_of_place(screen)
     level_pc_play.a_star_search_manhattan(screen)
     level_pc_play.greedy_search_out_of_place(screen)
@@ -71,7 +72,7 @@ def level_1_ex_2():
         [None, None, None, None, None, None, None, None, None],
     ]
 
-
+    print("Level 1 - Example 2")
     level_board = Board()
     level_board.set_board(level_board_matrix)
     level_state = GameState(level_board)
@@ -98,10 +99,10 @@ def level_2_ex_1():
         [None, None, None, None, None, None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
+        [None, None, None, None, None, None, 'X', None, None],
+        [None, None, None, 'X', 'X', 'X', None, None, None],
+        [None, 'X', None, 'X', 'X', None, None, None, None],
+        [None, None, 'X', 'X', None, None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
     ]
@@ -112,6 +113,7 @@ def level_2_ex_1():
     level_state = GameState(level_board)
     level_pc_play = PCPlay(level_state)
 
+    print("Level 2 - Example 1")
     level_pc_play.a_star_search_out_of_place(screen)
     level_pc_play.a_star_search_manhattan(screen)
     level_pc_play.greedy_search_out_of_place(screen)
@@ -132,11 +134,11 @@ def level_2_ex_2():
 
     level_board_matrix = [
         [None, None, None, None, None, None, None, None, None],
+        [None, None, None, None, 'X', None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
+        [None, None, None, 'X', None, 'X', None, None, None],
+        [None, None, None, 'X', None, 'X', 'X', None, None],
+        [None, None, 'X', 'X', 'X', None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
@@ -148,10 +150,11 @@ def level_2_ex_2():
     level_state = GameState(level_board)
     level_pc_play = PCPlay(level_state)
 
-    level_pc_play.a_star_search_out_of_place(screen)
-    level_pc_play.a_star_search_manhattan(screen)
+    print("Level 2 - Example 2")
     level_pc_play.greedy_search_out_of_place(screen)
     level_pc_play.greedy_search_manhattan(screen)
+    level_pc_play.a_star_search_out_of_place(screen)
+    level_pc_play.a_star_search_manhattan(screen)
     level_pc_play.uniform_cost_search(screen)
     level_pc_play.iterative_deepening_search(screen)
     level_pc_play.dfs(screen)
@@ -170,11 +173,11 @@ def level_3_ex_1():
         [None, None, None, None, None, None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
+        [None, None, None, None, None, None, None, 'X', None],
+        [None, None, None, 'X', None, 'X', None, None, None],
+        [None, None, None, None, None, 'X', 'X', None, 'X'],
+        [None, None, None, None, None, 'X', None, None, None],
+        [None, None, 'X', None, 'X', None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
     ]
 
@@ -184,10 +187,11 @@ def level_3_ex_1():
     level_state = GameState(level_board)
     level_pc_play = PCPlay(level_state)
 
-    level_pc_play.a_star_search_out_of_place(screen)
-    level_pc_play.a_star_search_manhattan(screen)
+    print("Level 3 - Example 1")
     level_pc_play.greedy_search_out_of_place(screen)
     level_pc_play.greedy_search_manhattan(screen)
+    level_pc_play.a_star_search_manhattan(screen)
+    level_pc_play.a_star_search_out_of_place(screen)
     level_pc_play.uniform_cost_search(screen)
     level_pc_play.iterative_deepening_search(screen)
     level_pc_play.dfs(screen)
@@ -203,14 +207,14 @@ def level_3_ex_2():
     pygame.display.set_caption("Cogito Menu")
 
     level_board_matrix = [
+        [None, None, None, None, 'X', None, None, None, None],
+        [None, None, None, None, 'X', None, None, None, None],
+        [None, None, None, None, 'X', None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
-        [None, None, None, None, None, None, None, None, None],
+        [None, 'X', None, 'X', None, None, None, None, None],
+        ['X', 'X', None, None, None, None, None, None, None],
+        [None, 'X', None, None, None, None, None, None, None],
+        [None, 'X', None, None, None, None, None, None, None],
         [None, None, None, None, None, None, None, None, None],
     ]
 
@@ -220,10 +224,11 @@ def level_3_ex_2():
     level_state = GameState(level_board)
     level_pc_play = PCPlay(level_state)
 
-    level_pc_play.a_star_search_out_of_place(screen)
-    level_pc_play.a_star_search_manhattan(screen)
+    print("Level 3 - Example 2")
     level_pc_play.greedy_search_out_of_place(screen)
     level_pc_play.greedy_search_manhattan(screen)
+    level_pc_play.a_star_search_out_of_place(screen)
+    level_pc_play.a_star_search_manhattan(screen)
     level_pc_play.uniform_cost_search(screen)
     level_pc_play.iterative_deepening_search(screen)
     level_pc_play.dfs(screen)

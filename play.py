@@ -6,8 +6,25 @@ import random
 import time
 
 class Game:
+    """
+    A class representing the game environment.
+
+    Attributes:
+        screen: The Pygame screen object.
+        board (Board): The game board.
+        selected_arrow (int): The index of the selected arrow.
+        game_over (bool): Flag indicating whether the game is over.
+        mouse_pos (tuple): The current mouse position.
+        start_time (float): The starting time of the game.
+    """
     
     def __init__(self, screen):
+        """
+        Initializes the Game object.
+
+        Args:
+            screen: The Pygame screen object.
+        """
         self.screen = screen
         self.board = Board()    
         self.selected_arrow = 0
@@ -17,6 +34,9 @@ class Game:
 
 
     def run(self):
+        """
+        Runs the game loop.
+        """
         self.screen.fill((0, 0, 0))
         self.board.draw_board(self.screen)
         pygame.display.flip()
@@ -48,12 +68,21 @@ class Game:
                 
 
     def draw_timer(self, elapsed_time):
+        """
+        Draws the timer on the screen.
+
+        Args:
+            elapsed_time (int): The elapsed time in seconds.
+        """
         font = pygame.font.Font('assets/retro.ttf', 20)
         text = font.render("Time: " + str(elapsed_time) + "s", True, (255, 255, 255))
 
         self.screen.blit(text, (10,10))
 
     def draw_arrows(self):
+        """
+        Draws the arrow indicators on the screen.
+        """
         arrow_width = 30
         arrow_height = 25
         arrow_spacing = 50 
@@ -91,6 +120,9 @@ class Game:
 
 
     def handle_events(self):
+        """
+        Handles Pygame events.
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -117,6 +149,12 @@ class Game:
 
 
     def select_arrow(self, direction): #simpler version for debugging
+        """
+        Selects an arrow based on the given direction.
+
+        Args:
+            direction (str): The direction of the arrow.
+        """
         if direction == "left":
             if self.selected_arrow == 0:
                 self.selected_arrow = 35
@@ -152,6 +190,9 @@ class Game:
 
 
     def selected_arrow_mouse(self):
+        """
+        Selects an arrow based on mouse input.
+        """
         arrow_width = 30
         arrow_height = 25
         arrow_spacing = 50
@@ -185,6 +226,9 @@ class Game:
         self.select_arrow = 0 #if no arrow is selected, select the first arrow
 
     def execute_move(self):
+        """
+        Executes the selected move.
+        """
         if self.selected_arrow < 9: #top arrows
             self.board.shift_column(self.selected_arrow, 'down')
         elif self.selected_arrow < 18 and self.selected_arrow >= 9: #right arrows
@@ -196,6 +240,12 @@ class Game:
 
 
     def make_random_moves(self, num_moves): #makes the initial random moves
+        """
+        Makes random moves.
+
+        Args:
+            num_moves (int): The number of random moves to make.
+        """
         arrows = random.sample(range(36), num_moves)
         for arrow in arrows:
             time.sleep(0.5) #wait 1 second before making the next move
@@ -205,6 +255,12 @@ class Game:
             pygame.display.flip()
 
     def make_initial_moves(self,num_moves): #perfected version of make_random_moves, only moves columns/rows with x's in them
+        """
+        Makes initial moves based on existing 'X' cells on the board.
+
+        Args:
+            num_moves (int): The number of initial moves to make.
+        """
         make_move = False
         i = 0
         while(i < num_moves):
@@ -233,6 +289,12 @@ class Game:
                 continue              
 
     def check_game_over(self):
+        """
+        Checks if the game is over.
+
+        Returns:
+            bool: True if the game is over, False otherwise.
+        """
         game_over_board = Board()
         game_over_board.initialize_center_cells()
         if self.board.board == game_over_board.board:
@@ -243,6 +305,9 @@ class Game:
             return False
 
     def draw_game_over(self):
+        """
+        Draws the game over screen.
+        """
         self.screen.fill((0, 0, 0))
 
         background_image = pygame.image.load("assets/background.jpg") 

@@ -8,7 +8,19 @@ import sys
 
 
 class Menu:
+    """
+    A class representing the main menu of the game.
+
+    Attributes:
+        screen: Pygame screen to display the menu.
+    """
     def __init__(self, screen):
+        """
+        Initializes the Menu object.
+
+        Args:
+            screen: Pygame screen to display the menu.
+        """
         self.screen = screen
         self.clock = pygame.time.Clock()
         self.bg_image = pygame.image.load('assets/background.jpg').convert()  
@@ -17,6 +29,9 @@ class Menu:
         self.options = ["Play", "PC Solve", "Quit"]
 
     def run(self):
+        """
+        Runs the main menu.
+        """
         while True:
             self.screen.blit(self.bg_image, (0, 0))  
             self.draw_options()
@@ -26,6 +41,16 @@ class Menu:
             self.clock.tick(30)
 
     def draw_text_with_shadow(self, text, font, color, y, shadow_color):
+        """
+        Draws text with shadow on the screen.
+
+        Args:
+            text: Text to be displayed.
+            font: Pygame font object.
+            color: Color of the text.
+            y: Y-coordinate of the text.
+            shadow_color: Color of the shadow.
+        """
         shadow_offset = 2
         text_surface = font.render(text, True, color)
         text_rect = text_surface.get_rect()
@@ -34,6 +59,15 @@ class Menu:
         self.screen.blit(text_surface, (x_centered, y))
 
     def draw_title(self, title, font, color, shadow_color):
+        """
+        Draws the title on the screen.
+
+        Args:
+            title: Title to be displayed.
+            font: Pygame font object.
+            color: Color of the title.
+            shadow_color: Color of the shadow.
+        """
         text_surface = font.render(title, True, color)
         text_rect = text_surface.get_rect()
         x_centered = (self.screen.get_width() - text_rect.width) // 2
@@ -42,6 +76,9 @@ class Menu:
         self.screen.blit(text_surface, (x_centered, y))
 
     def draw_options(self):
+        """
+        Draws the menu options on the screen.
+        """
         title_font = pygame.font.Font('assets/retro.ttf', 48)
         self.draw_title("Cogito", title_font, (255, 215, 0), (0, 0, 0))
 
@@ -53,6 +90,9 @@ class Menu:
 
 
     def handle_events(self):
+        """
+        Handles user events in the menu.
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -69,6 +109,9 @@ class Menu:
                     sys.exit()
 
     def select_option(self):
+        """
+        Executes the selected menu option.
+        """
         if self.selected_option == 0:
             game = Game(self.screen)
             game.run()
@@ -79,6 +122,9 @@ class Menu:
             pygame.quit()
 
     def run_pc_play(self):
+        """
+        Runs the PC solve menu.
+        """
         while True:
             self.screen.fill((0, 0, 0))
             self.draw_pc_play_options()
@@ -88,6 +134,9 @@ class Menu:
             self.clock.tick(30)
 
     def draw_pc_play_options(self):
+        """
+        Draws PC solve menu options on the screen.
+        """
         pc_play_options = ["BFS", "DFS", "Iterative Deepening", "Uniform Cost Search", "Greedy Search", "A* Search", "Back"]
         screen_width, screen_height = self.screen.get_size()  
         
@@ -105,6 +154,9 @@ class Menu:
 
 
     def handle_pc_play_events(self):
+        """
+        Handles user events in the PC solve menu.
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -122,6 +174,9 @@ class Menu:
                     return
 
     def select_pc_play_option(self):
+        """
+        Executes the selected option in the PC solve menu.
+        """
         if self.selected_option == 0:
             self.screen.fill((0, 0, 0))
             game = Game(self.screen)
@@ -177,6 +232,12 @@ class Menu:
             return
 
     def run_heuristics_menu(self, current_algorithm):
+        """
+        Runs the heuristics menu for a given algorithm.
+
+        Args:
+            current_algorithm: The current algorithm being used.
+        """
         while True:
             self.screen.fill((0, 0, 0))
             self.draw_heuristics()
@@ -186,6 +247,9 @@ class Menu:
             self.clock.tick(30)
 
     def draw_heuristics(self):
+        """
+        Draws heuristics menu options on the screen.
+        """
         heuristic_options = ["Manhattan Distance","Out of Place Cells","Back"]
         screen_width, screen_height = self.screen.get_size()  
         
@@ -201,6 +265,12 @@ class Menu:
             self.screen.blit(text_surface, text_rect)
         
     def handle_heuristics(self,current_algorithm):
+        """
+        Handles user events in the heuristics menu.
+
+        Args:
+            current_algorithm: The current algorithm being used.
+        """
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
@@ -218,6 +288,12 @@ class Menu:
                     return
 
     def select_heuristic(self, current_algorithm):
+        """
+        Executes the selected heuristic option.
+
+        Args:
+            current_algorithm: The current algorithm being used.
+        """
         if self.selected_option == 0 and current_algorithm == "greedy": #greedy with manhattan distance
             self.screen.fill((0, 0, 0))
             game = Game(self.screen)

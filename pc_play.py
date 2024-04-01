@@ -8,13 +8,34 @@ import heapq
 import time
 
 
-class PCPlay: 
+class PCPlay:
+    """
+    A class representing puzzle-solving algorithms for a sliding puzzle game.
+
+    Attributes:
+        initial_state (State): The initial state of the game.
+    """
 
     def __init__(self, initial_state):
+        """
+        Initializes the PCPlay object with the initial state of the sliding puzzle.
+
+        Args:
+            initial_state (State): The initial state of the sliding puzzle.
+        """
         self.initial_state = initial_state
         
 
     def bfs(self, screen):
+        """
+        Performs Breadth-First Search (BFS) algorithm to solve the game.
+
+        Args:
+            screen: The Pygame screen to display the algorithm working.
+        
+        Returns:
+            list or None: A list of moves to solve the game or None if no solution found.
+        """
         print("BFS")
         queue = [self.initial_state]
         visited = set()  
@@ -52,6 +73,15 @@ class PCPlay:
 
 
     def dfs(self, screen):
+        """
+        Performs Depth-First Search (DFS) algorithm to solve the game.
+
+        Args:
+            screen: The Pygame screen to display the algorithm working.
+        
+        Returns:
+            list or None: A list of moves to solve the game or None if no solution found.
+        """
         print("DFS")
         stack = [self.initial_state]
         visited = set()
@@ -82,6 +112,15 @@ class PCPlay:
 
 
     def iterative_deepening_search(self, screen):
+        """
+        Performs Iterative Deepening Search algorithm to solve the game.
+
+        Args:
+            screen: The Pygame screen to display the algorithm working.
+        
+        Returns:
+            list or None: A list of moves to solve the game or None if no solution found.
+        """
         def depth_limited_search(state, depth):
             
             #Uncomment to display algorithm working
@@ -114,6 +153,15 @@ class PCPlay:
         return None
 
     def uniform_cost_search(self, screen):
+        """
+        Performs Uniform Cost Search algorithm to solve the game.
+
+        Args:
+            screen: The Pygame screen to display the algorithm working.
+        
+        Returns:
+            list or None: A list of moves to solve the game or None if no solution found.
+        """
         print("Uniform Cost Search")
         start_time = time.time()
         queue = []
@@ -145,6 +193,15 @@ class PCPlay:
 
 
     def greedy_search_manhattan(self, screen):
+        """
+        Performs Greedy Search using Manhattan Distance Heuristic to solve the game.
+
+        Args:
+            screen: The Pygame screen to display the algorithm working.
+        
+        Returns:
+            list or None: A list of moves to solve the game or None if no solution found.
+        """
         print("Greedy Search - Manhattan Distance Heuristic")
         start_time = time.time() 
 
@@ -177,6 +234,15 @@ class PCPlay:
         return None
 
     def greedy_search_out_of_place(self, screen):
+        """
+        Performs Greedy Search using Out-of-Place Heuristic to solve the sliding game.
+
+        Args:
+            screen: The Pygame screen to display the algorithm working.
+        
+        Returns:
+            list or None: A list of moves to solve the game or None if no solution found.
+        """
         print("Greedy Search - Out-of-Place Heuristic")
         start_time = time.time() 
 
@@ -211,6 +277,15 @@ class PCPlay:
 
 
     def a_star_search_manhattan(self, screen):
+        """
+        Performs A* Search using Manhattan Distance Heuristic to solve the game.
+
+        Args:
+            screen: The Pygame screen to display the algorithm working.
+        
+        Returns:
+            list or None: A list of moves to solve the game or None if no solution found.
+        """
         print("A* Search - Manhattan Distance Heuristic")
         start_time = time.time() 
 
@@ -254,6 +329,15 @@ class PCPlay:
         return None
 
     def a_star_search_out_of_place(self, screen):
+        """
+        Performs A* Search using Out-of-Place Heuristic to solve the game.
+
+        Args:
+            screen: The Pygame screen to display the algorithm working.
+        
+        Returns:
+            list or None: A list of moves to solve the game or None if no solution found.
+        """
         print("A* Search - Out-of-Place Heuristic")
         start_time = time.time() 
 
@@ -296,6 +380,13 @@ class PCPlay:
         return None
     
     def draw_history(self, move_history, screen):
+        """
+        Displays the move history of the game.
+
+        Args:
+            move_history (list): A list of states representing the move history.
+            screen: The Pygame screen to display the move history.
+        """
         print("draw_history")
         print(f"len={len(move_history)}")
         pygame.display.set_caption("Move History")
@@ -336,6 +427,14 @@ class PCPlay:
 
 
     def draw_results(self, time_taken, move_history, screen):
+        """
+        Displays the results of the game-solving algorithm.
+
+        Args:
+            time_taken (float): Time taken by the algorithm to solve the game.
+            move_history (list): A list of states representing the move history.
+            screen: The Pygame screen to display the results.
+        """
         pygame.display.set_caption("Results")
         clock = pygame.time.Clock()
 

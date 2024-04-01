@@ -15,7 +15,10 @@ class Board:
             for j in range(3, 6):
                 self.board[i][j] = 'X'
 
-    def set_board(self,board): #used to set initial board according to level desired in the algorithm comparison file
+    def set_board(self, board):
+        if len(board) != self.size or any(len(row) != self.size for row in board):
+            raise ValueError("Invalid board size. Board must be 9x9.")
+        
         self.board = board
 
     def print_board(self):

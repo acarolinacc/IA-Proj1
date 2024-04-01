@@ -13,6 +13,7 @@ class Game:
         self.selected_arrow = 0
         self.game_over = False
         self.mouse_pos = (0, 0)
+        self.start_time = time.time()
 
 
     def run(self):
@@ -24,7 +25,13 @@ class Game:
         
         #gameplay
         while not self.game_over:
+
             self.board.draw_board(self.screen)
+
+            #timer functions
+            elapsed_time = int(time.time() - self.start_time)
+            self.draw_timer(elapsed_time)
+
             self.draw_arrows()  # Draw arrows on top of the board
             self.handle_events()
             pygame.display.flip()
@@ -38,6 +45,12 @@ class Game:
                 if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
                     return
                 
+
+    def draw_timer(self, elapsed_time):
+        font = pygame.font.Font('assets/retro.ttf', 20)
+        text = font.render("Time: " + str(elapsed_time) + "s", True, (255, 255, 255))
+
+        self.screen.blit(text, (10,10))
 
     def draw_arrows(self):
         arrow_width = 30

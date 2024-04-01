@@ -302,7 +302,7 @@ class PCPlay:
         clock = pygame.time.Clock()
 
         bg_image = pygame.image.load('assets/background.jpg').convert()  
-        font = pygame.font.Font('assets/retro.ttf', 36)
+        font = pygame.font.Font('assets/retro.ttf', 18)
 
         current_move = 0 #começar no inicio da lista (initial_state)
         running = True
@@ -326,6 +326,11 @@ class PCPlay:
             current_state = move_history[current_move]
             current_state.draw_board(screen)  # Pass the screen to draw_board
             
+            caption_text = "Use LEFT and RIGHT keys to navigate steps, ESC to leave"
+            caption_render = font.render(caption_text, True, (255, 255, 255))
+            caption_rect = caption_render.get_rect(center=(screen.get_width() // 2, screen.get_height() - 50))
+            screen.blit(caption_render, caption_rect)
+
             pygame.display.flip()
             clock.tick(30)
 

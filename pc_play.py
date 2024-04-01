@@ -264,51 +264,58 @@ class PCPlay:
         pygame.display.set_caption("Results")
         clock = pygame.time.Clock()
 
-        bg_image = pygame.image.load('assets/background.jpg').convert()  
-
-        font = pygame.font.Font(None, 36)
-        button_font = pygame.font.Font(None, 30)
+        bg_image = pygame.image.load('assets/background.jpg').convert()
+        font = pygame.font.Font('assets/retro.ttf', 36)
+        button_font = pygame.font.Font('assets/retro.ttf', 30)
         text_color = (255, 255, 255)
+        shadow_color = (0, 0, 0, 50)
+        text_shadow_offset = 2
+        button_color = (234, 182, 118)  # Cor nova para o botão
+        button_hover_color = (210, 164, 106)  # Cor mais escura para o estado hover
+
+        button_rect = pygame.Rect(screen.get_width() / 2 - 100, 300, 200, 50)
 
         running = True
-
         while running:
-            screen.blit(bg_image, (0, 0)) 
+            screen.blit(bg_image, (0, 0))
 
-            time_text = font.render(f"Time taken: {time_taken:.2f} seconds", True, text_color)
-            moves_text = font.render(f"Total moves: {total_moves}", True, text_color)
+            mouse_pos = pygame.mouse.get_pos()
+            button_hover = button_rect.collidepoint(mouse_pos)
 
+            def draw_text_with_shadow(text, pos, shadow_offset=2):
+                text_surface = font.render(text, True, text_color)
+                shadow_surface = font.render(text, True, shadow_color)
+                text_pos = text_surface.get_rect(center=pos)
+                shadow_pos = text_pos.copy()
+                shadow_pos.x += shadow_offset
+                shadow_pos.y += shadow_offset
+                screen.blit(shadow_surface, shadow_pos)
+                screen.blit(text_surface, text_pos)
 
+            draw_text_with_shadow(f"Time taken: {time_taken:.2f} seconds", (screen.get_width() / 2, 150))
+            draw_text_with_shadow(f"Total moves: {total_moves}", (screen.get_width() / 2, 200))
 
-            screen.blit(time_text, (50, 50))
-            screen.blit(moves_text, (50, 100))
-
-            see_steps_button = pygame.Rect(50, 200, 200, 50)
-            pygame.draw.rect(screen, (0, 255, 0), see_steps_button)
-            button_text = button_font.render("See Steps", True, (0, 0, 0))
-            screen.blit(button_text, (see_steps_button.x + 10, see_steps_button.y + 10))
-
-
+            pygame.draw.rect(screen, button_hover_color if button_hover else button_color, button_rect)
+            button_text = button_font.render("See Steps", True, text_color)
+            button_text_rect = button_text.get_rect(center=button_rect.center)
+            screen.blit(button_text, button_text_rect)
 
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                elif event.type == pygame.MOUSEBUTTONDOWN:
-                    mouse_pos = event.pos
-                    if see_steps_button.collidepoint(mouse_pos):
-                        # User clicked "See Steps" button
-                        running = self.animateMovesSlowly(screen, move_history)
+                elif event.type == pygame.MOUSEBUTTONDOWN and button_hover:
+                    self.animateMovesSlowly(screen, move_history)
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         running = False
                     elif event.key == pygame.K_SPACE:
-                        running = self.animateMovesSlowly(screen, move_history)
-                    
+                        self.animateMovesSlowly(screen, move_history)
 
             pygame.display.flip()
-            clock.tick(30)
+            clock.tick(60)
 
         pygame.quit()
+
 
     def animateMovesSlowly(self, screen, move_history):
         clock = pygame.time.Clock()

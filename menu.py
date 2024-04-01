@@ -169,31 +169,126 @@ class Menu:
                 print("No solution found")
 
         elif self.selected_option == 4:
-            self.screen.fill((0, 0, 0))
-            game = Game(self.screen)
-            game.make_initial_moves(macros.NUM_INITIAL_MOVES)
-            initial_state = GameState(game.board)
-            pc_play = PCPlay(initial_state)
-            result = pc_play.greedy_search(self.screen) #resulting goal_state move_history
-            if result is not None:
-                pc_play.draw_history(result, self.screen)
-            else:
-                print("No solution found")
+            self.run_heuristics_menu("greedy")
+            #self.screen.fill((0, 0, 0))
+            #game = Game(self.screen)
+            #game.make_initial_moves(macros.NUM_INITIAL_MOVES)
+            #initial_state = GameState(game.board)
+            #pc_play = PCPlay(initial_state)
+            #result = pc_play.greedy_search(self.screen) #resulting goal_state move_history
+            #if result is not None:
+            #    pc_play.draw_history(result, self.screen)
+            #else:
+            #    print("No solution found")
                 
         elif self.selected_option == 5:
-            self.screen.fill((0, 0, 0))
-            game = Game(self.screen)
-            game.make_initial_moves(macros.NUM_INITIAL_MOVES)
-            initial_state = GameState(game.board)
-            pc_play = PCPlay(initial_state)
-            result = pc_play.a_star_search(self.screen) #resulting goal_state move_history
-
-            if result is not None:
-                pc_play.draw_history(result, self.screen)
-            else:
-                print("No solution found")
+            self.run_heuristics_menu("a*")
+            #self.screen.fill((0, 0, 0))
+            #game = Game(self.screen)
+            #game.make_initial_moves(macros.NUM_INITIAL_MOVES)
+            #initial_state = GameState(game.board)
+            #pc_play = PCPlay(initial_state)
+            #result = pc_play.a_star_search_manhattan(self.screen) #resulting goal_state move_history
+            #if result is not None:
+            #    pc_play.draw_history(result, self.screen)
+            #else:
+            #    print("No solution found")
 
         elif self.selected_option == 6:
             self.run()
             return
 
+    def run_heuristics_menu(self, current_algorithm):
+        while True:
+            self.screen.fill((0, 0, 0))
+            self.draw_heuristics()
+            self.handle_heuristics(current_algorithm)
+
+            pygame.display.flip()
+            self.clock.tick(30)
+
+    def draw_heuristics(self):
+        heuristic_options = ["Manhattan Distance","Out of Place Cells","Back"]
+        screen_width, screen_height = self.screen.get_size()  
+        
+        background_image = pygame.image.load("assets/background.jpg")
+        self.screen.blit(background_image, (0, 0))
+
+        
+        for i, option in enumerate(heuristic_options):
+            color = (255, 255, 0) if i == self.selected_option else (255, 255, 255)
+            text_surface = self.font.render(option, True, color)
+            text_rect = text_surface.get_rect(center=(screen_width / 2, screen_height / 2 + i * 50 - len(heuristic_options) * 25))
+            
+            self.screen.blit(text_surface, text_rect)
+        
+    def handle_heuristics(self,current_algorithm):
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_UP:
+                    self.selected_option = (self.selected_option - 1) % 3
+                elif event.key == pygame.K_DOWN:
+                    self.selected_option = (self.selected_option + 1) % 3
+                elif event.key == pygame.K_RETURN:
+                    self.select_heuristic(current_algorithm)
+                elif event.key == pygame.K_ESCAPE:
+                    return
+
+    def select_heuristic(self, current_algorithm):
+        if self.selected_option == 0 and current_algorithm == "greedy": #greedy with manhattan distance
+            self.screen.fill((0, 0, 0))
+            game = Game(self.screen)
+            game.make_initial_moves(macros.NUM_INITIAL_MOVES)
+            initial_state = GameState(game.board)
+            pc_play = PCPlay(initial_state)
+            result = pc_play.greedy_search_manhattan(self.screen) #resulting goal_state move_history
+            if result is not None:
+                pc_play.draw_history(result, self.screen)
+            else:
+                print("No solution found")
+
+
+        elif self.selected_option == 1 and current_algorithm == "greedy": #greedy with out of place cells
+            self.screen.fill((0, 0, 0))
+            game = Game(self.screen)
+            game.make_initial_moves(macros.NUM_INITIAL_MOVES)
+            initial_state = GameState(game.board)
+            pc_play = PCPlay(initial_state)
+            result = pc_play.greedy_search_out_of_place(self.screen) #resulting goal_state move_history
+            if result is not None:
+                pc_play.draw_history(result, self.screen)
+            else:
+                print("No solution found")
+                
+        elif self.selected_option == 0 and current_algorithm == "a*": #a* with manhattan distance
+            self.screen.fill((0, 0, 0))
+            game = Game(self.screen)
+            game.make_initial_moves(macros.NUM_INITIAL_MOVES)
+            initial_state = GameState(game.board)
+            pc_play = PCPlay(initial_state)
+            result = pc_play.a_star_search_manhattan(self.screen) #resulting goal_state move_history
+
+            if result is not None:
+                pc_play.draw_history(result, self.screen)
+            else:
+                print("No solution found")
+
+        elif self.selected_option == 1 and current_algorithm == "a*": #a* with out of place 
+            self.screen.fill((0, 0, 0))
+            game = Game(self.screen)
+            game.make_initial_moves(macros.NUM_INITIAL_MOVES)
+            initial_state = GameState(game.board)
+            pc_play = PCPlay(initial_state)
+            result = pc_play.a_star_search_out_of_place(self.screen) #resulting goal_state move_history
+
+            if result is not None:
+                pc_play.draw_history(result, self.screen)
+            else:
+                print("No solution found")
+
+        elif self.selected_option == 2:
+            self.run_pc_play()
+            return

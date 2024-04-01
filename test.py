@@ -12,19 +12,10 @@ board1 = Board()
 game_state = GameState(board)
 game_state1 = GameState(board1)
 
-game_state.shift_column(4,'up')
-game_state.shift_column(3,'down')
-game_state.shift_column(4,'up')
-game_state.shift_column(5,'down')
+game_state1.shift_column(4,'up')
+game_state1.shift_column(4,'down')
 
-print(len(game_state.move_history))
+print(hash(game_state))
+print(hash(game_state1))
 
-i = 0
 
-for child in game_state.move_history:
-    screen.fill((0,0,0))
-    child.draw_board(screen)
-    i+=1
-    print(i)
-    pygame.display.flip()
-    time.sleep(1)

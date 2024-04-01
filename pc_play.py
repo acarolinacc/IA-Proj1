@@ -25,15 +25,16 @@ class PCPlay:
             state = queue.pop(0)  
             visited.add(state)  
 
-            screen.fill((0, 0, 0))
-            state.board.draw_board(screen)
-            pygame.display.flip()
+            #Uncomment to display algorithm working
+            #screen.fill((0, 0, 0))
+            #state.board.draw_board(screen)
+            #pygame.display.flip()
 
             if state.goal_state():
                 end_time = time.time() 
                 elapsed_time = end_time - start_time
                 print(f"BFS completado em {end_time - start_time:.2f} segundos.")
-                self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
+                self.draw_results(elapsed_time, state.move_history, screen)
                 return state.move_history
 
             for child in state.children():
@@ -59,16 +60,17 @@ class PCPlay:
             state = stack.pop(0)
             visited.add(state)
 
-            screen.fill((0, 0, 0))
-            state.board.draw_board(screen)
-            pygame.display.flip()
+            #Uncomment to display algorithm working
+            #screen.fill((0, 0, 0))
+            #state.board.draw_board(screen)
+            #pygame.display.flip()
 
 
             if state.goal_state():
                 end_time = time.time()  # Finaliza a medição do tempo
                 print(f"DFS completado em {end_time - start_time:.2f} segundos.")
                 elapsed_time = end_time - start_time
-                self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
+                self.draw_results(elapsed_time, state.move_history, screen)
                 return state.move_history
 
             for child in reversed(state.children()): 
@@ -80,13 +82,15 @@ class PCPlay:
     def iterative_deepening_search(self, screen):
         def depth_limited_search(state, depth):
             
-            screen.fill((0, 0, 0))
-            state.board.draw_board(screen)
-            pygame.display.flip()
+            #Uncomment to display algorithm working
+            #screen.fill((0, 0, 0))
+            #state.board.draw_board(screen)
+            #pygame.display.flip()
+
             if state.goal_state():
                 end_time = time.time()  # Finaliza a medição do tempo
                 elapsed_time = end_time - start_time
-                self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
+                self.draw_results(elapsed_time, state.move_history, screen)
                 return state.move_history
             if depth == 0:
                 return None
@@ -117,14 +121,16 @@ class PCPlay:
             cost, state = heapq.heappop(queue)
             if state not in visited:
                 visited.add(state)
-                screen.fill((0, 0, 0))
-                state.board.draw_board(screen)
-                pygame.display.flip()
+                
+                #Uncomment to display algorithm working
+                #screen.fill((0, 0, 0))
+                #state.board.draw_board(screen)
+                #pygame.display.flip()
 
                 if state.goal_state():
                     end_time = time.time()  # Finaliza a medição do tempo
                     elapsed_time = end_time - start_time
-                    self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
+                    self.draw_results(elapsed_time, state.move_history, screen)
                     return state.move_history 
 
                 for child in state.children():
@@ -135,8 +141,8 @@ class PCPlay:
         return None
 
 
-    def greedy_search(self, screen):
-        print("Greedy Search")
+    def greedy_search_manhattan(self, screen):
+        print("Greedy Search - Manhattan Distance Heuristic")
         start_time = time.time() 
 
         queue = PriorityQueue()
@@ -147,15 +153,49 @@ class PCPlay:
             _, state = queue.get()  
             if state not in visited:
                 visited.add(state)
-                screen.fill((0, 0, 0))
-                state.board.draw_board(screen)
-                pygame.display.flip()
+
+                #Uncomment to display algorithm working
+                #screen.fill((0, 0, 0))
+                #state.board.draw_board(screen)
+                #pygame.display.flip()
 
                 if state.goal_state(): 
                     end_time = time.time()  # Finaliza a medição do tempo
                     elapsed_time = end_time - start_time
                     print(f"Greedy Search completado em {end_time - start_time:.2f} segundos.")
-                    self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
+                    self.draw_results(elapsed_time, state.move_history, screen)
+                    return state.move_history
+
+                for child in state.children():
+                    if child not in visited:
+                        heuristic_value = child.board.manhattan_distance_heuristic() 
+                        queue.put((heuristic_value, child))
+
+        return None
+
+    def greedy_search_out_of_place(self, screen):
+        print("Greedy Search - Out-of-Place Heuristic")
+        start_time = time.time() 
+
+        queue = PriorityQueue()
+        queue.put((0, self.initial_state))  
+        visited = set() 
+
+        while not queue.empty():
+            _, state = queue.get()  
+            if state not in visited:
+                visited.add(state)
+            
+                #Uncomment to display algorithm working
+                #screen.fill((0, 0, 0))
+                #state.board.draw_board(screen)
+                #pygame.display.flip()
+
+                if state.goal_state(): 
+                    end_time = time.time()  # Finaliza a medição do tempo
+                    elapsed_time = end_time - start_time
+                    print(f"Greedy Search completado em {end_time - start_time:.2f} segundos.")
+                    self.draw_results(elapsed_time, state.move_history, screen)
                     return state.move_history
 
                 for child in state.children():
@@ -167,8 +207,8 @@ class PCPlay:
 
 
 
-    def a_star_search(self, screen):
-        print("A* Search")
+    def a_star_search_manhattan(self, screen):
+        print("A* Search - Manhattan Distance Heuristic")
         start_time = time.time() 
 
         queue = PriorityQueue()
@@ -179,51 +219,78 @@ class PCPlay:
             _, state = queue.get()
             if state not in visited:
                 visited.add(state)
-                screen.fill((0, 0, 0))
-                state.board.draw_board(screen)
-                pygame.display.flip()
+
+                #Uncomment to display algorithm working
+                #screen.fill((0, 0, 0))
+                #state.board.draw_board(screen)
+                #pygame.display.flip()
 
                 if state.goal_state():
                     end_time = time.time() 
                     elapsed_time = end_time - start_time 
-                    print(f"A* Search completado em {end_time - start_time:.2f} segundos.")
-                    self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
+                    print(f"A* Search (manhattan) completado em {end_time - start_time:.2f} segundos.")
+                    #self.draw_results(elapsed_time, state.move_history, screen)
                     return state.move_history
 
                 for child in state.children():
                     if child not in visited:
                         g = len(state.move_history) + 1  # g(n) = cost so far
-                        h = self.manhattan_distance_heuristic(child)  # h(n) = heuristic value of the child state
+                        h = child.board.manhattan_distance_heuristic()   # h(n) = heuristic value of the child state
                         f = g + h  # f(n) = g(n) + h(n)
                         queue.put((f, child))
                     else:
                         existing_g = len(child.move_history)
                         new_g = len(state.move_history) + 1
                         if new_g < existing_g:
-                            h = self.manhattan_distance_heuristic(child)
+                            h = child.board.manhattan_distance_heuristic() 
                             f = new_g + h
                             queue.put((f, child))
 
         end_time = time.time() 
-        print(f"A* Search terminou sem encontrar um estado objetivo em {end_time - start_time:.2f} segundos.")
+        print(f"A* Search (manhattan) terminou sem encontrar um estado objetivo em {end_time - start_time:.2f} segundos.")
         return None
 
+    def a_star_search_out_of_place(self, screen):
+        print("A* Search - Out-of-Place Heuristic")
+        start_time = time.time() 
 
+        queue = PriorityQueue()
+        queue.put((0, self.initial_state))
+        visited = set()
 
+        while not queue.empty():
+            _, state = queue.get()
+            if state not in visited:
+                visited.add(state)
+                
+                #Uncomment to display algorithm working
+                #screen.fill((0, 0, 0))
+                #state.board.draw_board(screen)
+                #pygame.display.flip()
 
+                if state.goal_state():
+                    end_time = time.time() 
+                    elapsed_time = end_time - start_time 
+                    print(f"A* Search (out-of-place) completado em {end_time - start_time:.2f} segundos.")
+                    return state.move_history
 
+                for child in state.children():
+                    if child not in visited:
+                        g = len(state.move_history) + 1  # g(n) = cost so far
+                        h = child.board.out_of_place_heuristic()  # h(n) = heuristic value of the child state
+                        f = g + h  # f(n) = g(n) + h(n)
+                        queue.put((f, child))
+                    else:
+                        existing_g = len(child.move_history)
+                        new_g = len(state.move_history) + 1
+                        if new_g < existing_g:
+                            h = child.board.out_of_place_heuristic()
+                            f = new_g + h
+                            queue.put((f, child))
 
-    def manhattan_distance_heuristic(self, state):
-        goal_positions = [(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]
-        total_distance = 0
-
-        for row_index, row in enumerate(state.board.board):
-            for col_index, cell in enumerate(row):
-                if cell == 'X':  
-                    min_distance = min(abs(row_index - goal[0]) + abs(col_index - goal[1]) for goal in goal_positions)
-                    total_distance += min_distance
-
-        return total_distance
+        end_time = time.time() 
+        print(f"A* Search (out-of-place) terminou sem encontrar um estado objetivo em {end_time - start_time:.2f} segundos.")
+        return None
     
     def draw_history(self, move_history, screen):
         print("draw_history")
@@ -232,6 +299,7 @@ class PCPlay:
         clock = pygame.time.Clock()
 
         bg_image = pygame.image.load('assets/background.jpg').convert()  
+        font = pygame.font.Font('assets/retro.ttf', 36)
 
         current_move = len(move_history) - 1  # Começar do final da lista
         running = True
@@ -258,9 +326,8 @@ class PCPlay:
             pygame.display.flip()
             clock.tick(30)
 
-        pygame.quit()
 
-    def drawResults(self, time_taken, total_moves, move_history, screen):
+    def draw_results(self, time_taken, move_history, screen):
         pygame.display.set_caption("Results")
         clock = pygame.time.Clock()
 
@@ -274,6 +341,8 @@ class PCPlay:
         button_hover_color = (210, 164, 106)  # Cor mais escura para o estado hover
 
         button_rect = pygame.Rect(screen.get_width() / 2 - 100, 300, 200, 50)
+
+        total_moves = len(move_history) - 1 #dont account for initial state
 
         running = True
         while running:
@@ -304,17 +373,18 @@ class PCPlay:
                 if event.type == pygame.QUIT:
                     running = False
                 elif event.type == pygame.MOUSEBUTTONDOWN and button_hover:
-                    self.animateMovesSlowly(screen, move_history)
+                    self.draw_history(move_history,screen)
                 elif event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
                         running = False
-                    elif event.key == pygame.K_SPACE:
-                        self.animateMovesSlowly(screen, move_history)
+                    elif event.key == pygame.K_RETURN:
+                        self.draw_history(move_history,screen)
+                    elif event.key == pygame.K_ESCAPE:
+                        running = False
 
             pygame.display.flip()
             clock.tick(60)
 
-        pygame.quit()
 
 
     def animateMovesSlowly(self, screen, move_history):

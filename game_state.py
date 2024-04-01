@@ -19,9 +19,9 @@ class GameState:
     def add_move_to_history(self):
         self.move_history.append(deepcopy(self.board))
 
-    def __hash__(self):
+    def __hash__(self): #used to search values in visited sets. takes into account only the current state of the board
         board_hash = self.board.hash_value()
-        return hash((board_hash, self.depth, tuple([row.hash_value() for row in self.move_history])))
+        return board_hash
 
     def __eq__(self, other):
         return isinstance(other, GameState) and self.board == other.board
@@ -44,7 +44,6 @@ class GameState:
                 children_states.append(new_state)
         return children_states
 
-    
     def goal_state(self):
         center_positions = [(3, 3), (3, 4), (3, 5), (4, 3), (4, 4), (4, 5), (5, 3), (5, 4), (5, 5)]
         board_matrix = self.board.getBoard() if hasattr(self.board, 'getBoard') else self.board.board
@@ -56,7 +55,12 @@ class GameState:
         x_outside_center = sum(board_matrix[r][c] == 'X' for r in range(9) for c in range(9) if (r, c) not in center_positions)
 
         return x_in_center == 9 and x_outside_center == 0
-
+    '''
+    def goal_state(self):
+        goal_board = Board() #initialize_center_cells is called in board.__init__
+        goal_state = GameState(goal_board,0,[])
+        return self == goal_state
+    '''
 
 
     #OPERATORS

@@ -4,7 +4,7 @@ Step into the world of Cogito, a mesmerizing puzzle game for Windows that rekind
 
 Official game website: https://www.myabandonware.com/game/cogito-1d4
 
-![Game](Assets/images/game.png)
+![Game](assets/images/game.png)
 
 ## Compilation & Running Instructions
 
@@ -34,7 +34,7 @@ python main.py
 
 Upon launching Cogito, the main menu unfolds with options beckoning your choice:
 
-![Menu](Assets/images/main_menu.png)
+![Menu](assets/images/main_menu.png)
 
 Play: Dive into the game and commence your puzzle-solving journey.
 
@@ -52,7 +52,7 @@ The options are:
 - Greedy
 - A* (A-Star)
 
-![Algoritmos](Assets/images/algoritmos.png)
+![Algoritmos](assets/images/algoritmos.png)
 
 In the "Greedy" and "A*" search algorithms for the Cogito game, two heuristics are often used: the Manhattan distance and the Out of Place Cells.
 
@@ -68,7 +68,7 @@ In the "Greedy" and "A*" search algorithms for the Cogito game, two heuristics a
 
   A Search*: When applied in A* Search, this heuristic helps to balance between the cost of the path taken and the number of pieces that still need to be moved to their correct positions. It aids in finding an efficient path that reduces the number of out of place pieces as quickly as possible.
 
-![Heuristicas](Assets/images/heuristicas.png)
+![Heuristicas](assets/images/heuristicas.png)
 
 
 ## Controls

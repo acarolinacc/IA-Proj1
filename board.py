@@ -64,6 +64,20 @@ class Board:
                 else:
                     pygame.draw.circle(screen, (127, 30, 136, 255), cell_rect.center, self.cell_size // 3)
 
+    def draw_movements(self, screen):
+        screen.fill((19, 8, 64))  
+
+        for row in range(self.size):
+            for col in range(self.size):
+                cell_rect = pygame.Rect(macros.X_OFFSET + col * self.cell_size, macros.Y_OFFSET + row * self.cell_size, self.cell_size, self.cell_size)
+                pygame.draw.rect(screen, (255, 255, 255), cell_rect, 2, border_radius=5)  
+
+                if self.board[row][col] == "X":
+                    pygame.draw.circle(screen, (231, 214, 100), cell_rect.center, self.cell_size // 3)
+                else:
+                    pygame.draw.circle(screen, (127, 30, 136, 255), cell_rect.center, self.cell_size // 3)
+
+
 
     def shift_column(self, col, direction):
         if direction == 'up':

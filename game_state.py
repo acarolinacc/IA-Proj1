@@ -1,5 +1,6 @@
 from board import Board
 from copy import deepcopy
+import pygame
 
 class GameState:
     def __init__(self, board, depth=0, move_history=None):
@@ -72,4 +73,12 @@ class GameState:
     def child_cost(self):
         return 1
     
+    def draw_time_taken(self, screen, time_taken):
+        screen.fill((19, 8, 64))
+    
+        font = pygame.font.Font(None, 36)
+        text = font.render("Tempo total: " + str(round(time_taken, 2)) + "s", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(screen.get_width() // 2, screen.get_height() // 2))
+        screen.blit(text, text_rect)
 
+        pygame.display.flip()

@@ -31,7 +31,9 @@ class PCPlay:
 
             if state.goal_state():
                 end_time = time.time() 
+                elapsed_time = end_time - start_time
                 print(f"BFS completado em {end_time - start_time:.2f} segundos.")
+                self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
                 return state.move_history
 
             for child in state.children():
@@ -63,7 +65,10 @@ class PCPlay:
 
 
             if state.goal_state():
-                print(f"DFS completado em {time.time() - start_time:.2f} segundos.")
+                end_time = time.time()  # Finaliza a medição do tempo
+                print(f"DFS completado em {end_time - start_time:.2f} segundos.")
+                elapsed_time = end_time - start_time
+                self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
                 return state.move_history
 
             for child in reversed(state.children()): 
@@ -79,6 +84,9 @@ class PCPlay:
             state.board.draw_board(screen)
             pygame.display.flip()
             if state.goal_state():
+                end_time = time.time()  # Finaliza a medição do tempo
+                elapsed_time = end_time - start_time
+                self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
                 return state.move_history
             if depth == 0:
                 return None
@@ -100,6 +108,7 @@ class PCPlay:
 
     def uniform_cost_search(self, screen):
         print("Uniform Cost Search")
+        start_time = time.time()
         queue = []
         heapq.heappush(queue, (0, self.initial_state))
         visited = set()
@@ -113,6 +122,9 @@ class PCPlay:
                 pygame.display.flip()
 
                 if state.goal_state():
+                    end_time = time.time()  # Finaliza a medição do tempo
+                    elapsed_time = end_time - start_time
+                    self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
                     return state.move_history 
 
                 for child in state.children():
@@ -141,7 +153,9 @@ class PCPlay:
 
                 if state.goal_state(): 
                     end_time = time.time()  # Finaliza a medição do tempo
+                    elapsed_time = end_time - start_time
                     print(f"Greedy Search completado em {end_time - start_time:.2f} segundos.")
+                    self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
                     return state.move_history
 
                 for child in state.children():
@@ -170,8 +184,10 @@ class PCPlay:
                 pygame.display.flip()
 
                 if state.goal_state():
-                    end_time = time.time()  
+                    end_time = time.time() 
+                    elapsed_time = end_time - start_time 
                     print(f"A* Search completado em {end_time - start_time:.2f} segundos.")
+                    self.drawResults(elapsed_time, len(state.move_history), state.move_history, screen)
                     return state.move_history
 
                 for child in state.children():
@@ -243,3 +259,83 @@ class PCPlay:
             clock.tick(30)
 
         pygame.quit()
+
+    def drawResults(self, time_taken, total_moves, move_history, screen):
+        pygame.display.set_caption("Results")
+        clock = pygame.time.Clock()
+
+        bg_image = pygame.image.load('assets/background.jpg').convert()  
+
+        font = pygame.font.Font(None, 36)
+        button_font = pygame.font.Font(None, 30)
+        text_color = (255, 255, 255)
+
+        running = True
+
+        while running:
+            screen.blit(bg_image, (0, 0)) 
+
+            time_text = font.render(f"Time taken: {time_taken:.2f} seconds", True, text_color)
+            moves_text = font.render(f"Total moves: {total_moves}", True, text_color)
+
+
+
+            screen.blit(time_text, (50, 50))
+            screen.blit(moves_text, (50, 100))
+
+            see_steps_button = pygame.Rect(50, 200, 200, 50)
+            pygame.draw.rect(screen, (0, 255, 0), see_steps_button)
+            button_text = button_font.render("See Steps", True, (0, 0, 0))
+            screen.blit(button_text, (see_steps_button.x + 10, see_steps_button.y + 10))
+
+
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    mouse_pos = event.pos
+                    if see_steps_button.collidepoint(mouse_pos):
+                        # User clicked "See Steps" button
+                        running = self.animateMovesSlowly(screen, move_history)
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False
+                    elif event.key == pygame.K_SPACE:
+                        running = self.animateMovesSlowly(screen, move_history)
+                    
+
+            pygame.display.flip()
+            clock.tick(30)
+
+        pygame.quit()
+
+    def animateMovesSlowly(self, screen, move_history):
+        clock = pygame.time.Clock()
+        running = True
+        current_move = 0
+
+        while running:
+            screen.fill((0, 0, 0)) 
+            current_state = move_history[current_move]
+            current_state.draw_movements(screen)  # Pass the screen to draw_board
+            pygame.display.flip()
+
+            time.sleep(0.8)  # Adjust the delay time as needed
+
+            current_move += 1
+            if current_move >= len(move_history):
+                running = False
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False  # Return False if user wants to quit
+                elif event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        running = False  # Return False if user wants to quit
+                    elif event.key == pygame.K_SPACE:
+                        return True  # Return True if user wants to stop animation
+
+            clock.tick(30)
+
+        return True
